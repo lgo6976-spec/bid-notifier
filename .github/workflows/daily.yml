@@ -2,7 +2,7 @@ name: 포항 축산 입찰 알리미
 
 on:
   schedule:
-    - cron: '0 22 * * *'   # 매일 07:00 KST (UTC+9)
+    - cron: '0 0 * * *'    # 매일 09:00 KST (UTC+9)
   workflow_dispatch: {}     # Actions 탭에서 수동 실행 버튼도 사용 가능
 
 permissions:

@@ -445,46 +445,49 @@ DASHBOARD_CSS = """
   h1 { font-family: "Gowun Batang", "Noto Serif KR", serif; font-weight: 700;
     font-size: clamp(28px, 4vw, 38px); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
   .subhead { color: var(--ink-dim); font-size: 15px; max-width: 60ch; }
+  .keyword-line { font-size: 13px; color: var(--ink-dim); margin-top: 10px; }
+  .keyword-line .k { color: var(--ink-faint); margin-right: 6px; }
+  .keyword-line .v { color: var(--accent); font-weight: 500; }
   .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px; margin: 32px 0 40px; }
+    gap: 12px; margin: 24px 0 32px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 16px 18px; box-shadow: var(--shadow); }
-  .stat .num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
-    font-size: 26px; font-weight: 500; color: var(--ink); }
+  .stat .num { font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif; font-variant-numeric: tabular-nums;
+    font-size: 24px; font-weight: 600; color: var(--ink); }
   .stat .label { font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
   .section-label { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--ink-dim);
     margin: 0 0 14px; display: flex; align-items: baseline; gap: 8px; }
   .section-label .count { font-family: "IBM Plex Mono", monospace; color: var(--accent); }
-  .cards { display: flex; flex-direction: column; gap: 14px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-    padding: 20px 22px; box-shadow: var(--shadow); display: grid;
-    grid-template-columns: 1fr auto; gap: 12px 20px; }
+  .cards { display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 13px 16px; box-shadow: var(--shadow); display: grid;
+    grid-template-columns: 1fr auto; gap: 8px 16px; }
   .card.is-new { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
-  .card-title-row { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-  .new-flag { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
-    color: var(--surface); padding: 2px 7px; border-radius: 5px; margin-top: 3px; flex-shrink: 0; }
-  .card-title { font-family: "Gowun Batang", serif; font-size: 18px; font-weight: 700;
+  .card-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+  .new-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
+    color: var(--surface); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
+  .card-title { font-family: "Gowun Batang", serif; font-size: 15.5px; font-weight: 700;
     line-height: 1.4; text-wrap: balance; }
   .deadline-chip { justify-self: end; align-self: start; display: flex; flex-direction: column;
-    align-items: flex-end; gap: 2px; padding: 7px 12px; border-radius: 8px;
+    align-items: flex-end; gap: 1px; padding: 5px 10px; border-radius: 7px;
     font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
-  .deadline-chip .d-label { font-size: 10px; font-weight: 600; letter-spacing: .05em;
+  .deadline-chip .d-label { font-size: 9.5px; font-weight: 600; letter-spacing: .05em;
     font-family: "IBM Plex Sans KR", sans-serif; }
-  .deadline-chip .d-time { font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .deadline-chip .d-time { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
   .deadline-chip.urgent { background: var(--urgent-soft); color: var(--urgent); }
   .deadline-chip.soon   { background: var(--soon-soft);   color: var(--soon); }
   .deadline-chip.ok     { background: var(--ok-soft);     color: var(--ok); }
   .meta-grid { grid-column: 1 / -1; display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 24px;
-    border-top: 1px solid var(--border); padding-top: 14px; margin-top: 2px; }
-  .meta-item .k { font-size: 11px; color: var(--ink-faint); letter-spacing: .03em; }
-  .meta-item .v { font-size: 13.5px; color: var(--ink); margin-top: 2px; }
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px 20px;
+    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 1px; }
+  .meta-item .k { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .03em; }
+  .meta-item .v { font-size: 12.5px; color: var(--ink); margin-top: 1px; }
   .meta-item .v.mono { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
-  .tags { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; }
-  .tag { font-size: 11px; background: var(--accent-soft); color: var(--accent);
-    padding: 3px 9px; border-radius: 999px; font-weight: 500; }
-  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 12px;
-    margin-top: 2px; font-size: 12.5px; line-height: 1.7; color: var(--ink-dim); }
+  .tags { grid-column: 1 / -1; display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag { font-size: 10.5px; background: var(--accent-soft); color: var(--accent);
+    padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 8px;
+    margin-top: 1px; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
   .qlfc-note .k { display: block; font-size: 11px; color: var(--ink-faint);
     letter-spacing: .03em; margin-bottom: 3px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
@@ -597,7 +600,8 @@ def write_dashboard(matches, seen_before_this_run, config):
   <header>
     <div class="eyebrow">공공급식통합플랫폼 · 자동 수집</div>
     <h1>{region} 축산·육류 입찰 알리미</h1>
-    <div class="subhead">전국 학교급식 입찰공고 중 배송지가 {region}시이고 제목에 {', '.join(config['item_keywords'])} 관련 단어가 들어간 건만 걸러 모았습니다.</div>
+    <div class="subhead">전국 학교급식 입찰공고 중 배송지가 {region}시인 건만 걸러 모았습니다.</div>
+    <div class="keyword-line"><span class="k">필터 키워드</span><span class="v">{' · '.join(config['item_keywords'])}</span></div>
   </header>
   <div class="stat-row">
     <div class="stat"><div class="num">{len(matches_sorted)}</div><div class="label">조건에 맞는 공고</div></div>
