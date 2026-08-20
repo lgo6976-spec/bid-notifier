@@ -1,0 +1,35 @@
+name: 포항 축산 입찰 알리미
+
+on:
+  schedule:
+    - cron: '0 22 * * *'   # 매일 07:00 KST (UTC+9)
+  workflow_dispatch: {}     # Actions 탭에서 수동 실행 버튼도 사용 가능
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run notifier
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_APP_PASSWORD: ${{ secrets.SMTP_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          DASHBOARD_FILENAME: index.html
+        run: python bid_notifier.py
+
+      - name: Commit updated state + dashboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_ids.json index.html run.log
+          git diff --cached --quiet || git commit -m "daily update $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
