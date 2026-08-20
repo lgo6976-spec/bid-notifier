@@ -498,6 +498,45 @@ DASHBOARD_CSS = """
 """
 
 
+def password_gate_html(password):
+    """단순 클라이언트 사이드 비밀번호 입력창. 진짜 보안은 아니고(페이지 소스에 값이
+    그대로 보임) 우연히 링크로 들어온 사람을 막는 정도의 용도. password가 비어있으면
+    아무것도 넣지 않는다(비밀번호 없이 그대로 공개). 한 번 맞히면 같은 브라우저에서는
+    다시 안 물어본다(localStorage)."""
+    if not password:
+        return ""
+    pw_js = json.dumps(password)
+    return f"""<script>
+(function() {{
+  var PW = {pw_js};
+  if (localStorage.getItem('bn_unlocked') === PW) return;
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:#f5f3ee;display:flex;' +
+    'align-items:center;justify-content:center;font-family:sans-serif;z-index:9999;';
+  overlay.innerHTML = '<div style="text-align:center">' +
+    '<p style="margin-bottom:10px">비밀번호를 입력하세요</p>' +
+    '<input type="password" id="bn_pw" style="padding:8px;font-size:16px;border:1px solid #ccc;border-radius:6px">' +
+    '<button id="bn_go" style="padding:8px 16px;margin-left:6px;border-radius:6px;border:1px solid #ccc;cursor:pointer">확인</button>' +
+    '<p id="bn_err" style="color:#b23a2c;display:none;margin-top:8px">비밀번호가 틀렸습니다</p></div>';
+  document.body.appendChild(overlay);
+  function check() {{
+    var v = document.getElementById('bn_pw').value;
+    if (v === PW) {{
+      localStorage.setItem('bn_unlocked', PW);
+      overlay.remove();
+    }} else {{
+      document.getElementById('bn_err').style.display = 'block';
+    }}
+  }}
+  document.getElementById('bn_go').addEventListener('click', check);
+  document.getElementById('bn_pw').addEventListener('keydown', function(e) {{
+    if (e.key === 'Enter') check();
+  }});
+  document.getElementById('bn_pw').focus();
+}})();
+</script>"""
+
+
 def write_dashboard(matches, seen_before_this_run, config):
     matches_sorted = sorted(matches, key=lambda r: r.get("BID_END_DT", ""))
     region = config["region_keyword"]
@@ -553,6 +592,7 @@ def write_dashboard(matches, seen_before_this_run, config):
 <style>{DASHBOARD_CSS}</style>
 </head>
 <body>
+{password_gate_html(config.get("page_password", ""))}
 <div class="page">
   <header>
     <div class="eyebrow">공공급식통합플랫폼 · 자동 수집</div>
@@ -563,7 +603,7 @@ def write_dashboard(matches, seen_before_this_run, config):
     <div class="stat"><div class="num">{len(matches_sorted)}</div><div class="label">조건에 맞는 공고</div></div>
     <div class="stat"><div class="num">{new_count}</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">{region}</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">{datetime.now():%m.%d}</div><div class="label">수집 시각 {datetime.now():%H:%M}</div></div>
+    <div class="stat"><div class="num">{datetime.now().month}월 {datetime.now().day}일</div><div class="label">수집 시각 {datetime.now():%H:%M}</div></div>
   </div>
   <p class="section-label">진행중인 공고 <span class="count">{len(matches_sorted)}건</span></p>
   <div class="cards">
