@@ -116,35 +116,7 @@
 </style>
 </head>
 <body>
-<script>
-(function() {
-  var PW = "1234";
-  if (localStorage.getItem('bn_unlocked') === PW) return;
-  var overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:#f5f3ee;display:flex;' +
-    'align-items:center;justify-content:center;font-family:sans-serif;z-index:9999;';
-  overlay.innerHTML = '<div style="text-align:center">' +
-    '<p style="margin-bottom:10px">비밀번호를 입력하세요</p>' +
-    '<input type="password" id="bn_pw" style="padding:8px;font-size:16px;border:1px solid #ccc;border-radius:6px">' +
-    '<button id="bn_go" style="padding:8px 16px;margin-left:6px;border-radius:6px;border:1px solid #ccc;cursor:pointer">확인</button>' +
-    '<p id="bn_err" style="color:#b23a2c;display:none;margin-top:8px">비밀번호가 틀렸습니다</p></div>';
-  document.body.appendChild(overlay);
-  function check() {
-    var v = document.getElementById('bn_pw').value;
-    if (v === PW) {
-      localStorage.setItem('bn_unlocked', PW);
-      overlay.remove();
-    } else {
-      document.getElementById('bn_err').style.display = 'block';
-    }
-  }
-  document.getElementById('bn_go').addEventListener('click', check);
-  document.getElementById('bn_pw').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') check();
-  });
-  document.getElementById('bn_pw').focus();
-})();
-</script>
+
 <div class="page">
   <header>
     <div class="eyebrow">공공급식통합플랫폼 · 자동 수집</div>
@@ -156,7 +128,7 @@
     <div class="stat"><div class="num">4</div><div class="label">조건에 맞는 공고</div></div>
     <div class="stat"><div class="num">0</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">포항</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">8월 20일</div><div class="label">수집 시각 12:22</div></div>
+    <div class="stat"><div class="num">8월 20일</div><div class="label">수집 시각 14:29</div></div>
   </div>
   <p class="section-label">진행중인 공고 <span class="count">4건</span></p>
   <div class="cards">
@@ -256,7 +228,7 @@
     </div>
   </div>
   <footer>
-    이 페이지는 2026-08-20 12:22 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
+    이 페이지는 2026-08-20 14:29 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
     건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
   </footer>
