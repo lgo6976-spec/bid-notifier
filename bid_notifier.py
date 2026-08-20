@@ -371,7 +371,7 @@ def send_email(matches, new_count, config):
             f"   기초가격: {fmt_price(base_price)}\n"
             f"   공고게시일: {fmt_date(d.get('PBANC_YMD') or r.get('PBANC_YMD',''))}\n"
             f"   입찰기간: {fmt_dt(d.get('BID_BGNG_DT',''))} ~ {fmt_dt(d.get('BID_END_DT') or r.get('BID_END_DT',''))}\n"
-            f"   개찰일시: {fmt_dt(d.get('OPNG_DT',''))}\n"
+            f"   개찰일시: {fmt_dt(d.get('OPNG_DT',''))} ({dday_info(d.get('OPNG_DT',''))[0]})\n"
             f"   개찰장소: {opng_place}\n"
             f"   납품기간: {fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))} ({dday_from_date(r.get('DLVRY_STRT_DT',''))})\n"
             f"   지역제한: {d.get('LIMIT_CONDITION_NM') or r.get('LIMIT_CONDITION_NM','')}\n"
@@ -403,7 +403,7 @@ DASHBOARD_CSS = """
     --surface-2: #eaf0ee;
     --ink: #1c211f;
     --ink-dim: #5c6360;
-    --ink-faint: #8b928d;
+    --ink-faint: #6f766f;
     --accent: #1f5e57;
     --accent-soft: #dcebe8;
     --urgent: #b23a2c;
@@ -437,13 +437,13 @@ DASHBOARD_CSS = """
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
-    font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif; line-height: 1.5; }
+    font-family: "Pretendard", "Malgun Gothic", sans-serif; line-height: 1.5; }
   .page { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
   header { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
   .eyebrow { font-size: 12.5px; font-weight: 600; letter-spacing: .09em;
     text-transform: uppercase; color: var(--accent); }
-  h1 { font-family: "Gowun Batang", "Noto Serif KR", serif; font-weight: 700;
-    font-size: clamp(28px, 4vw, 38px); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+  h1 { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-weight: 700;
+    font-size: clamp(26px, 4vw, 34px); margin: 0; text-wrap: balance; letter-spacing: -.02em; }
   .subhead { color: var(--ink-dim); font-size: 15px; max-width: 60ch; }
   .keyword-line { font-size: 13px; color: var(--ink-dim); margin-top: 10px; }
   .keyword-line .k { color: var(--ink-faint); margin-right: 6px; }
@@ -452,7 +452,7 @@ DASHBOARD_CSS = """
     gap: 12px; margin: 24px 0 32px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 16px 18px; box-shadow: var(--shadow); }
-  .stat .num { font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif; font-variant-numeric: tabular-nums;
+  .stat .num { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-variant-numeric: tabular-nums;
     font-size: 24px; font-weight: 600; color: var(--ink); }
   .stat .label { font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
   .section-label { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--ink-dim);
@@ -460,36 +460,39 @@ DASHBOARD_CSS = """
   .section-label .count { font-family: "IBM Plex Mono", monospace; color: var(--accent); }
   .cards { display: flex; flex-direction: column; gap: 10px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-    padding: 13px 16px; box-shadow: var(--shadow); display: grid;
+    padding: 14px 18px; box-shadow: var(--shadow); display: grid;
     grid-template-columns: 1fr auto; gap: 8px 16px; }
   .card.is-new { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
   .card-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
   .new-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
     color: var(--surface); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
-  .card-title { font-family: "Gowun Batang", serif; font-size: 15.5px; font-weight: 700;
-    line-height: 1.4; text-wrap: balance; }
+  .card-title { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-size: 15px; font-weight: 700;
+    line-height: 1.4; text-wrap: balance; letter-spacing: -.01em; }
   .deadline-chip { justify-self: end; align-self: start; display: flex; flex-direction: column;
     align-items: flex-end; gap: 1px; padding: 5px 10px; border-radius: 7px;
     font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
   .deadline-chip .d-label { font-size: 9.5px; font-weight: 600; letter-spacing: .05em;
-    font-family: "IBM Plex Sans KR", sans-serif; }
-  .deadline-chip .d-time { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    font-family: "Pretendard", sans-serif; }
+  .deadline-chip .d-time { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .deadline-chip.urgent { background: var(--urgent-soft); color: var(--urgent); }
   .deadline-chip.soon   { background: var(--soon-soft);   color: var(--soon); }
   .deadline-chip.ok     { background: var(--ok-soft);     color: var(--ok); }
   .meta-grid { grid-column: 1 / -1; display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px 20px;
-    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 1px; }
-  .meta-item .k { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .03em; }
-  .meta-item .v { font-size: 12.5px; color: var(--ink); margin-top: 1px; }
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px 20px;
+    border-top: 1px solid var(--border); padding-top: 11px; margin-top: 1px; }
+  .meta-item.wide { grid-column: span 2; }
+  .meta-item .k { font-size: 11px; color: var(--ink-faint); letter-spacing: .02em; }
+  .meta-item .v { font-size: 13px; font-weight: 500; color: var(--ink); margin-top: 2px;
+    line-height: 1.4; }
   .meta-item .v.mono { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+  .meta-item.wide .v.mono { white-space: nowrap; }
   .tags { grid-column: 1 / -1; display: flex; gap: 5px; flex-wrap: wrap; }
-  .tag { font-size: 10.5px; background: var(--accent-soft); color: var(--accent);
-    padding: 2px 8px; border-radius: 999px; font-weight: 500; }
-  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 8px;
-    margin-top: 1px; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+  .tag { font-size: 11px; background: var(--accent-soft); color: var(--accent);
+    padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 9px;
+    margin-top: 1px; font-size: 12.5px; line-height: 1.65; color: var(--ink-dim); }
   .qlfc-note .k { display: block; font-size: 11px; color: var(--ink-faint);
-    letter-spacing: .03em; margin-bottom: 3px; }
+    letter-spacing: .02em; margin-bottom: 3px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
     color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
   footer code { font-family: "IBM Plex Mono", monospace; background: var(--surface-2);
@@ -573,11 +576,11 @@ def write_dashboard(matches, seen_before_this_run, config):
         <div class="meta-item"><div class="k">수요기관</div><div class="v">{html_escape(r.get('PURR_NM',''))}</div></div>
         <div class="meta-item"><div class="k">기초가격</div><div class="v mono">{fmt_price(base_price)}</div></div>
         <div class="meta-item"><div class="k">공고게시일</div><div class="v mono">{fmt_date(d.get('PBANC_YMD') or r.get('PBANC_YMD',''))}</div></div>
-        <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">{fmt_dt(d.get('BID_BGNG_DT',''))} ~ {fmt_dt(d.get('BID_END_DT') or r.get('BID_END_DT',''))}</div></div>
-        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">{fmt_dt(d.get('OPNG_DT',''))}</div></div>
-        <div class="meta-item"><div class="k">개찰장소</div><div class="v">{opng_place}</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">{fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))} ({dday_from_date(r.get('DLVRY_STRT_DT',''))})</div></div>
-        <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">{html_escape(d.get('SUCBD_DECISION_MTHD_NM') or r.get('SUCBD_DECISION_MTHD_NM',''))} · {html_escape(d.get('CNTRCT_FORM_NM',''))}</div></div>
+        <div class="meta-item wide"><div class="k">입찰기간</div><div class="v mono">{fmt_dt(d.get('BID_BGNG_DT',''))} ~ {fmt_dt(d.get('BID_END_DT') or r.get('BID_END_DT',''))}</div></div>
+        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">{fmt_dt(d.get('OPNG_DT',''))} ({dday_info(d.get('OPNG_DT',''))[0]})</div></div>
+        <div class="meta-item wide"><div class="k">개찰장소</div><div class="v">{opng_place}</div></div>
+        <div class="meta-item wide"><div class="k">납품기간</div><div class="v mono">{fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))} ({dday_from_date(r.get('DLVRY_STRT_DT',''))})</div></div>
+        <div class="meta-item wide"><div class="k">낙찰방법 · 계약방법</div><div class="v">{html_escape(d.get('SUCBD_DECISION_MTHD_NM') or r.get('SUCBD_DECISION_MTHD_NM',''))} · {html_escape(d.get('CNTRCT_FORM_NM',''))}</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">{r.get('ETN_BID_NO','')}</div></div>
       </div>
       {f'<div class="qlfc-note"><span class="k">자격조건</span>{html_escape(qlfc_cn)}</div>' if qlfc_cn else ''}
@@ -591,7 +594,9 @@ def write_dashboard(matches, seen_before_this_run, config):
 <title>{region} 축산·육류 입찰 알리미</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>{DASHBOARD_CSS}</style>
 </head>
 <body>
