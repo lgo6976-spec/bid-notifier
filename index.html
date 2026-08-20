@@ -108,6 +108,35 @@
 </style>
 </head>
 <body>
+<script>
+(function() {
+  var PW = "1234";
+  if (localStorage.getItem('bn_unlocked') === PW) return;
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:#f5f3ee;display:flex;' +
+    'align-items:center;justify-content:center;font-family:sans-serif;z-index:9999;';
+  overlay.innerHTML = '<div style="text-align:center">' +
+    '<p style="margin-bottom:10px">비밀번호를 입력하세요</p>' +
+    '<input type="password" id="bn_pw" style="padding:8px;font-size:16px;border:1px solid #ccc;border-radius:6px">' +
+    '<button id="bn_go" style="padding:8px 16px;margin-left:6px;border-radius:6px;border:1px solid #ccc;cursor:pointer">확인</button>' +
+    '<p id="bn_err" style="color:#b23a2c;display:none;margin-top:8px">비밀번호가 틀렸습니다</p></div>';
+  document.body.appendChild(overlay);
+  function check() {
+    var v = document.getElementById('bn_pw').value;
+    if (v === PW) {
+      localStorage.setItem('bn_unlocked', PW);
+      overlay.remove();
+    } else {
+      document.getElementById('bn_err').style.display = 'block';
+    }
+  }
+  document.getElementById('bn_go').addEventListener('click', check);
+  document.getElementById('bn_pw').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') check();
+  });
+  document.getElementById('bn_pw').focus();
+})();
+</script>
 <div class="page">
   <header>
     <div class="eyebrow">공공급식통합플랫폼 · 자동 수집</div>
@@ -116,16 +145,16 @@
   </header>
   <div class="stat-row">
     <div class="stat"><div class="num">4</div><div class="label">조건에 맞는 공고</div></div>
-    <div class="stat"><div class="num">4</div><div class="label">신규 (이번 실행)</div></div>
+    <div class="stat"><div class="num">0</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">포항</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">08.20</div><div class="label">수집 시각 11:45</div></div>
+    <div class="stat"><div class="num">8월 20일</div><div class="label">수집 시각 12:02</div></div>
   </div>
   <p class="section-label">진행중인 공고 <span class="count">4건</span></p>
   <div class="cards">
     
-    <div class="card is-new">
+    <div class="card ">
       <div class="card-title-row">
-        <span class="new-flag">NEW</span>
+        
         <span class="card-title">2026년 9월 학교급식 식재료(육류) 구매 소액수의</span>
       </div>
       <div class="deadline-chip urgent">
@@ -139,16 +168,16 @@
         <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-14 17:00 ~ 2026-08-21 13:00</div></div>
         <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-21 14:00</div></div>
         <div class="meta-item"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 장미길 10 포항여자고등학교 급식소</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30</div></div>
+        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
         <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260814-648114-0</div></div>
       </div>
       
       <div class="tags"><span class="tag">육류</span><span class="tag">지역제한경쟁</span></div>
     </div>
-    <div class="card is-new">
+    <div class="card ">
       <div class="card-title-row">
-        <span class="new-flag">NEW</span>
+        
         <span class="card-title">2026년 9월 대구교육해양수련원 육류 구매 소액수의 안내 공고</span>
       </div>
       <div class="deadline-chip soon">
@@ -162,16 +191,16 @@
         <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 14:00 ~ 2026-08-25 10:00</div></div>
         <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-25 11:00</div></div>
         <div class="meta-item"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 흥해읍 해안로 1252</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30</div></div>
+        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
         <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260818-652027-0</div></div>
       </div>
       
       <div class="tags"><span class="tag">육류</span><span class="tag">지역제한경쟁</span></div>
     </div>
-    <div class="card is-new">
+    <div class="card ">
       <div class="card-title-row">
-        <span class="new-flag">NEW</span>
+        
         <span class="card-title">2026년 9월 급식재료 육류 구매를 위한 소액수의 견적 제출 공고</span>
       </div>
       <div class="deadline-chip ok">
@@ -185,7 +214,7 @@
         <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 16:00 ~ 2026-08-26 09:00</div></div>
         <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 10:00</div></div>
         <div class="meta-item"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 용흥로 291번길 19 포항여자전자고등학교 급식실</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30</div></div>
+        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
         <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260820-654895-0</div></div>
       </div>
@@ -193,9 +222,9 @@
 (※ 상기 소기업·소상공인 확인서는 유효기간 내에 있는 것으로 계약체결일까지 제출하여야 하며, 중소기업 공공구매 종합정보망에서 확인 가능하여야 합니다.)</div>
       <div class="tags"><span class="tag">육류</span><span class="tag">지역제한경쟁</span></div>
     </div>
-    <div class="card is-new">
+    <div class="card ">
       <div class="card-title-row">
-        <span class="new-flag">NEW</span>
+        
         <span class="card-title">2026년 9월 대동고등학교 육류 소액수의</span>
       </div>
       <div class="deadline-chip ok">
@@ -209,7 +238,7 @@
         <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 15:00 ~ 2026-08-26 10:00</div></div>
         <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 11:00</div></div>
         <div class="meta-item"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 우창서길 34</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30</div></div>
+        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
         <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260820-655934-0</div></div>
       </div>
@@ -218,7 +247,7 @@
     </div>
   </div>
   <footer>
-    이 페이지는 2026-08-20 11:45 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
+    이 페이지는 2026-08-20 12:02 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
     건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
   </footer>
