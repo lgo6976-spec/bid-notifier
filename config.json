@@ -13,7 +13,7 @@
     "from_name": "입찰정보 알리미"
   },
   "recipient_email": "SET_VIA_GITHUB_SECRET",
-  "page_password": "1234",
+  "page_password": "",
   "github_pages": {
     "enabled": false,
     "_comment": "GitHub Actions 배포에서는 워크플로 자체가 커밋/푸시를 처리하므로 이 값은 false로 둔다."
