@@ -319,6 +319,20 @@ def dday_info(bid_end_dt):
     return label, tier
 
 
+def dday_from_date(date8):
+    """YYYYMMDD 형식 날짜까지 남은/지난 일수를 D-N / D-DAY / D+N 형태로 돌려준다."""
+    try:
+        target = datetime.strptime(date8[:8], "%Y%m%d").date()
+    except Exception:
+        return ""
+    days = (target - datetime.now().date()).days
+    if days > 0:
+        return f"D-{days}"
+    elif days == 0:
+        return "D-DAY"
+    return f"D+{-days}"
+
+
 def html_escape(s):
     return (str(s or "")
             .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
@@ -359,7 +373,7 @@ def send_email(matches, new_count, config):
             f"   입찰기간: {fmt_dt(d.get('BID_BGNG_DT',''))} ~ {fmt_dt(d.get('BID_END_DT') or r.get('BID_END_DT',''))}\n"
             f"   개찰일시: {fmt_dt(d.get('OPNG_DT',''))}\n"
             f"   개찰장소: {opng_place}\n"
-            f"   납품기간: {fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))}\n"
+            f"   납품기간: {fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))} ({dday_from_date(r.get('DLVRY_STRT_DT',''))})\n"
             f"   지역제한: {d.get('LIMIT_CONDITION_NM') or r.get('LIMIT_CONDITION_NM','')}\n"
             f"   낙찰방법: {d.get('SUCBD_DECISION_MTHD_NM') or r.get('SUCBD_DECISION_MTHD_NM','')}\n"
             + (f"   자격조건: {d.get('ETC_QLFC_LMT_CN')}\n" if d.get("ETC_QLFC_LMT_CN") else "")
@@ -520,7 +534,7 @@ def write_dashboard(matches, seen_before_this_run, config):
         <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">{fmt_dt(d.get('BID_BGNG_DT',''))} ~ {fmt_dt(d.get('BID_END_DT') or r.get('BID_END_DT',''))}</div></div>
         <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">{fmt_dt(d.get('OPNG_DT',''))}</div></div>
         <div class="meta-item"><div class="k">개찰장소</div><div class="v">{opng_place}</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">{fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))}</div></div>
+        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">{fmt_date(r.get('DLVRY_STRT_DT',''))} ~ {fmt_date(r.get('DLVRY_END_DT',''))} ({dday_from_date(r.get('DLVRY_STRT_DT',''))})</div></div>
         <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">{html_escape(d.get('SUCBD_DECISION_MTHD_NM') or r.get('SUCBD_DECISION_MTHD_NM',''))} · {html_escape(d.get('CNTRCT_FORM_NM',''))}</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">{r.get('ETN_BID_NO','')}</div></div>
       </div>
