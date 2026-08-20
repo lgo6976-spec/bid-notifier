@@ -5,7 +5,9 @@
 <title>포항 축산·육류 입찰 알리미</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
   :root {
     --bg: #f5f3ee;
@@ -13,7 +15,7 @@
     --surface-2: #eaf0ee;
     --ink: #1c211f;
     --ink-dim: #5c6360;
-    --ink-faint: #8b928d;
+    --ink-faint: #6f766f;
     --accent: #1f5e57;
     --accent-soft: #dcebe8;
     --urgent: #b23a2c;
@@ -47,13 +49,13 @@
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
-    font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif; line-height: 1.5; }
+    font-family: "Pretendard", "Malgun Gothic", sans-serif; line-height: 1.5; }
   .page { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
   header { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
   .eyebrow { font-size: 12.5px; font-weight: 600; letter-spacing: .09em;
     text-transform: uppercase; color: var(--accent); }
-  h1 { font-family: "Gowun Batang", "Noto Serif KR", serif; font-weight: 700;
-    font-size: clamp(28px, 4vw, 38px); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+  h1 { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-weight: 700;
+    font-size: clamp(26px, 4vw, 34px); margin: 0; text-wrap: balance; letter-spacing: -.02em; }
   .subhead { color: var(--ink-dim); font-size: 15px; max-width: 60ch; }
   .keyword-line { font-size: 13px; color: var(--ink-dim); margin-top: 10px; }
   .keyword-line .k { color: var(--ink-faint); margin-right: 6px; }
@@ -62,7 +64,7 @@
     gap: 12px; margin: 24px 0 32px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 16px 18px; box-shadow: var(--shadow); }
-  .stat .num { font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif; font-variant-numeric: tabular-nums;
+  .stat .num { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-variant-numeric: tabular-nums;
     font-size: 24px; font-weight: 600; color: var(--ink); }
   .stat .label { font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
   .section-label { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--ink-dim);
@@ -70,36 +72,39 @@
   .section-label .count { font-family: "IBM Plex Mono", monospace; color: var(--accent); }
   .cards { display: flex; flex-direction: column; gap: 10px; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-    padding: 13px 16px; box-shadow: var(--shadow); display: grid;
+    padding: 14px 18px; box-shadow: var(--shadow); display: grid;
     grid-template-columns: 1fr auto; gap: 8px 16px; }
   .card.is-new { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
   .card-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
   .new-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
     color: var(--surface); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
-  .card-title { font-family: "Gowun Batang", serif; font-size: 15.5px; font-weight: 700;
-    line-height: 1.4; text-wrap: balance; }
+  .card-title { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-size: 15px; font-weight: 700;
+    line-height: 1.4; text-wrap: balance; letter-spacing: -.01em; }
   .deadline-chip { justify-self: end; align-self: start; display: flex; flex-direction: column;
     align-items: flex-end; gap: 1px; padding: 5px 10px; border-radius: 7px;
     font-family: "IBM Plex Mono", monospace; white-space: nowrap; }
   .deadline-chip .d-label { font-size: 9.5px; font-weight: 600; letter-spacing: .05em;
-    font-family: "IBM Plex Sans KR", sans-serif; }
-  .deadline-chip .d-time { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    font-family: "Pretendard", sans-serif; }
+  .deadline-chip .d-time { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .deadline-chip.urgent { background: var(--urgent-soft); color: var(--urgent); }
   .deadline-chip.soon   { background: var(--soon-soft);   color: var(--soon); }
   .deadline-chip.ok     { background: var(--ok-soft);     color: var(--ok); }
   .meta-grid { grid-column: 1 / -1; display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px 20px;
-    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 1px; }
-  .meta-item .k { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .03em; }
-  .meta-item .v { font-size: 12.5px; color: var(--ink); margin-top: 1px; }
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px 20px;
+    border-top: 1px solid var(--border); padding-top: 11px; margin-top: 1px; }
+  .meta-item.wide { grid-column: span 2; }
+  .meta-item .k { font-size: 11px; color: var(--ink-faint); letter-spacing: .02em; }
+  .meta-item .v { font-size: 13px; font-weight: 500; color: var(--ink); margin-top: 2px;
+    line-height: 1.4; }
   .meta-item .v.mono { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+  .meta-item.wide .v.mono { white-space: nowrap; }
   .tags { grid-column: 1 / -1; display: flex; gap: 5px; flex-wrap: wrap; }
-  .tag { font-size: 10.5px; background: var(--accent-soft); color: var(--accent);
-    padding: 2px 8px; border-radius: 999px; font-weight: 500; }
-  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 8px;
-    margin-top: 1px; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+  .tag { font-size: 11px; background: var(--accent-soft); color: var(--accent);
+    padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+  .qlfc-note { grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 9px;
+    margin-top: 1px; font-size: 12.5px; line-height: 1.65; color: var(--ink-dim); }
   .qlfc-note .k { display: block; font-size: 11px; color: var(--ink-faint);
-    letter-spacing: .03em; margin-bottom: 3px; }
+    letter-spacing: .02em; margin-bottom: 3px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
     color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
   footer code { font-family: "IBM Plex Mono", monospace; background: var(--surface-2);
@@ -151,7 +156,7 @@
     <div class="stat"><div class="num">4</div><div class="label">조건에 맞는 공고</div></div>
     <div class="stat"><div class="num">0</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">포항</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">8월 20일</div><div class="label">수집 시각 12:11</div></div>
+    <div class="stat"><div class="num">8월 20일</div><div class="label">수집 시각 12:22</div></div>
   </div>
   <p class="section-label">진행중인 공고 <span class="count">4건</span></p>
   <div class="cards">
@@ -169,11 +174,11 @@
         <div class="meta-item"><div class="k">수요기관</div><div class="v">포항여자고등학교</div></div>
         <div class="meta-item"><div class="k">기초가격</div><div class="v mono">16,633,590원</div></div>
         <div class="meta-item"><div class="k">공고게시일</div><div class="v mono">2026-08-14</div></div>
-        <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-14 17:00 ~ 2026-08-21 13:00</div></div>
-        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-21 14:00</div></div>
-        <div class="meta-item"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 장미길 10 포항여자고등학교 급식소</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
-        <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
+        <div class="meta-item wide"><div class="k">입찰기간</div><div class="v mono">2026-08-14 17:00 ~ 2026-08-21 13:00</div></div>
+        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-21 14:00 (D-1)</div></div>
+        <div class="meta-item wide"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 장미길 10 포항여자고등학교 급식소</div></div>
+        <div class="meta-item wide"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
+        <div class="meta-item wide"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260814-648114-0</div></div>
       </div>
       
@@ -192,11 +197,11 @@
         <div class="meta-item"><div class="k">수요기관</div><div class="v">대구교육해양수련원</div></div>
         <div class="meta-item"><div class="k">기초가격</div><div class="v mono">16,340,990원</div></div>
         <div class="meta-item"><div class="k">공고게시일</div><div class="v mono">2026-08-19</div></div>
-        <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 14:00 ~ 2026-08-25 10:00</div></div>
-        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-25 11:00</div></div>
-        <div class="meta-item"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 흥해읍 해안로 1252</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
-        <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
+        <div class="meta-item wide"><div class="k">입찰기간</div><div class="v mono">2026-08-20 14:00 ~ 2026-08-25 10:00</div></div>
+        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-25 11:00 (D-5)</div></div>
+        <div class="meta-item wide"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 흥해읍 해안로 1252</div></div>
+        <div class="meta-item wide"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
+        <div class="meta-item wide"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260818-652027-0</div></div>
       </div>
       
@@ -215,11 +220,11 @@
         <div class="meta-item"><div class="k">수요기관</div><div class="v">포항여자전자고등학교</div></div>
         <div class="meta-item"><div class="k">기초가격</div><div class="v mono">11,867,600원</div></div>
         <div class="meta-item"><div class="k">공고게시일</div><div class="v mono">2026-08-20</div></div>
-        <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 16:00 ~ 2026-08-26 09:00</div></div>
-        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 10:00</div></div>
-        <div class="meta-item"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 용흥로 291번길 19 포항여자전자고등학교 급식실</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
-        <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
+        <div class="meta-item wide"><div class="k">입찰기간</div><div class="v mono">2026-08-20 16:00 ~ 2026-08-26 09:00</div></div>
+        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 10:00 (D-6)</div></div>
+        <div class="meta-item wide"><div class="k">개찰장소</div><div class="v">경북 포항시 북구 용흥로 291번길 19 포항여자전자고등학교 급식실</div></div>
+        <div class="meta-item wide"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
+        <div class="meta-item wide"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260820-654895-0</div></div>
       </div>
       <div class="qlfc-note"><span class="k">자격조건</span>중소기업기본법 제2조 제2항에 따른 소기업 또는 소상공인 보호 및 지원에 관한 법률 제2조에 따른 소상공인으로서 중소기업 범위 및 확인에 관한 규정에 따라 발급된 소기업 또는 소상공인 확인서를 소지한 업체이어야 합니다. 
@@ -239,11 +244,11 @@
         <div class="meta-item"><div class="k">수요기관</div><div class="v">대동고등학교</div></div>
         <div class="meta-item"><div class="k">기초가격</div><div class="v mono">9,319,600원</div></div>
         <div class="meta-item"><div class="k">공고게시일</div><div class="v mono">2026-08-20</div></div>
-        <div class="meta-item"><div class="k">입찰기간</div><div class="v mono">2026-08-20 15:00 ~ 2026-08-26 10:00</div></div>
-        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 11:00</div></div>
-        <div class="meta-item"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 우창서길 34</div></div>
-        <div class="meta-item"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
-        <div class="meta-item"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
+        <div class="meta-item wide"><div class="k">입찰기간</div><div class="v mono">2026-08-20 15:00 ~ 2026-08-26 10:00</div></div>
+        <div class="meta-item"><div class="k">개찰일시</div><div class="v mono">2026-08-26 11:00 (D-6)</div></div>
+        <div class="meta-item wide"><div class="k">개찰장소</div><div class="v">경상북도 포항시 북구 우창서길 34</div></div>
+        <div class="meta-item wide"><div class="k">납품기간</div><div class="v mono">2026-09-01 ~ 2026-09-30 (D-12)</div></div>
+        <div class="meta-item wide"><div class="k">낙찰방법 · 계약방법</div><div class="v">예정가격의 [90]%이상 입찰가 중 최저가 낙찰 · 총액계약</div></div>
         <div class="meta-item"><div class="k">전자입찰번호</div><div class="v mono">E260820-655934-0</div></div>
       </div>
       
@@ -251,7 +256,7 @@
     </div>
   </div>
   <footer>
-    이 페이지는 2026-08-20 12:11 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
+    이 페이지는 2026-08-20 12:22 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
     건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
   </footer>
