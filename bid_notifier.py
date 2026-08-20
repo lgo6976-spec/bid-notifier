@@ -341,7 +341,7 @@ def send_email(matches, new_count, config):
     [신규] 표시를 붙여서, 한 메일 안에서 전체 현황 + 무엇이 새로 생겼는지를
     같이 보여준다. new_count == 0 이면 호출하지 않는다(호출부에서 체크)."""
     smtp_cfg = config["smtp"]
-    recipient = config["recipient_email"]
+    recipients = [e.strip() for e in config["recipient_email"].split(",") if e.strip()]
 
     lines = []
     for r, is_new in matches:
@@ -374,12 +374,12 @@ def send_email(matches, new_count, config):
     msg = MIMEText(body, "plain", "utf-8")
     msg["Subject"] = Header(f"[입찰정보 알리미] 신규 {new_count}건 · 전체 {len(matches)}건 ({config['region_keyword']})", "utf-8")
     msg["From"] = f"{smtp_cfg['from_name']} <{smtp_cfg['user']}>"
-    msg["To"] = recipient
+    msg["To"] = ", ".join(recipients)
 
     with smtplib.SMTP(smtp_cfg["host"], smtp_cfg["port"]) as server:
         server.starttls()
         server.login(smtp_cfg["user"], smtp_cfg["app_password"])
-        server.sendmail(smtp_cfg["user"], [recipient], msg.as_string())
+        server.sendmail(smtp_cfg["user"], recipients, msg.as_string())
 
 
 DASHBOARD_CSS = """
