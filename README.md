@@ -6,7 +6,8 @@
 - 새 공고가 있으면 **이메일**로 알리고 (전체 현황 + 신규 표시)
 - 현재 조건에 맞는 전체 목록을 **GitHub Pages**(`index.html`)로 공개합니다.
 
-**GitHub Actions**로 매일 07:00(KST) 자동 실행됩니다 — 개인 PC가 꺼져 있어도 동작합니다.
+**GitHub Actions**로 매일 12:10(KST) 자동 실행됩니다 — 개인 PC가 꺼져 있어도 동작합니다.
+(정각은 GitHub 서버 혼잡으로 지연되기 쉬워 10분 오프셋을 둠)
 
 ## 최초 설정 (한 번만)
 
@@ -38,5 +39,5 @@ Branch: `main` / `/(root)` 선택 후 저장. 몇 분 뒤
 - `bid_notifier.py`: 목록 API로 지역 필터링된 공고를 가져오고, 품목 키워드로 다시 걸러
   상세 API로 기초가격/입찰기간/개찰일시 등을 보강한 뒤, 이메일 발송 + `index.html` 생성.
 - `seen_ids.json`: 이미 알림을 보낸 공고 ID 기록 (워크플로가 매 실행 후 자동 커밋).
-- `.github/workflows/daily.yml`: 매일 UTC 22:00(KST 07:00)에 위 스크립트를 실행하고,
+- `.github/workflows/daily.yml`: 매일 UTC 03:10(KST 12:10)에 위 스크립트를 실행하고,
   변경된 `seen_ids.json`/`index.html`을 저장소에 자동 커밋·푸시.
