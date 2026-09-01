@@ -467,6 +467,14 @@ def matches_filter(row, item_keywords, exclude_keywords, now_str):
     return any(kw in bid_nm for kw in item_keywords)
 
 
+def is_uncertain_match(bid_nm, item_keywords):
+    """"소액수의"만으로 걸리고 제목에 축산 품목명이 명시돼있지 않은 애매한 매칭인지 확인.
+    (제목에 품목이 안 적힌 소액수의 공고는 실제로 축산일 수도, 채소/수산물일 수도 있어서
+    자동으로 확신할 수 없다 - 대신 [확인필요] 표시를 달아서 사람이 직접 확인하게 한다.)"""
+    confirmed_kw = [kw for kw in item_keywords if kw != "소액수의"]
+    return not any(kw in bid_nm for kw in confirmed_kw)
+
+
 def fmt_dt(s):
     # e.g. 20260826090000000 -> 2026-08-26 09:00
     if not s or len(s) < 12:
@@ -586,8 +594,9 @@ def send_email(matches, new_count, config):
         base_price = d.get("BGNG_PRC") or r.get("STRPRCE", "")
         opng_place = d.get("DOG_ADDR") or r.get("DLVRY_PLACE", "")
         flag = "[신규] " if is_new else "[기존] "
+        uncertain_flag = "[확인필요] " if r.get("_uncertain") else ""
         lines.append(
-            f"■ {flag}{r.get('BID_NM','')}\n"
+            f"■ {flag}{uncertain_flag}{r.get('BID_NM','')}\n"
             f"   수요기관: {r.get('PURR_NM','')}\n"
             f"   전자입찰번호: {r.get('ETN_BID_NO','')}\n"
             f"   진행상태: {r.get('ETN_BID_STT_NM','')}\n"
@@ -606,7 +615,8 @@ def send_email(matches, new_count, config):
     body = (
         f"신규 {new_count}건 (현재 조건에 맞는 전체 {len(matches)}건 중)\n\n"
         + "\n".join(lines)
-        + f"\n\n※ 상세/공고문 확인: {REFERER} (로그인 후 '입찰정보 > 입찰공고' 메뉴)\n"
+        + f"\n\n※ [확인필요] 표시는 제목에 품목명이 안 적혀있어 축산물인지 자동으로 확신할 수 없는 소액수의 공고입니다. 직접 확인해주세요.\n"
+        + f"※ 상세/공고문 확인: {REFERER} (로그인 후 '입찰정보 > 입찰공고' 메뉴)\n"
     )
 
     msg = MIMEText(body, "plain", "utf-8")
@@ -690,6 +700,8 @@ DASHBOARD_CSS = """
   .card-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
   .new-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
     color: var(--surface); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
+  .uncertain-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--soon-soft);
+    color: var(--soon); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
   .card-title { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-size: 15px; font-weight: 700;
     line-height: 1.4; text-wrap: balance; letter-spacing: -.01em; }
   .deadline-chip { justify-self: end; align-self: start; display: flex; flex-direction: column;
@@ -954,6 +966,7 @@ def write_dashboard(matches, seen_before_this_run, config):
     <div class="card {'is-new' if is_new else ''}">
       <div class="card-title-row">
         {'<span class="new-flag">NEW</span>' if is_new else ''}
+        {'<span class="uncertain-flag">확인필요</span>' if r.get("_uncertain") else ''}
         <span class="card-title">{html_escape(bid_nm)}</span>
       </div>
       <div class="deadline-chip {d_tier}">
@@ -1011,7 +1024,9 @@ def write_dashboard(matches, seen_before_this_run, config):
   <footer>
     이 페이지는 {datetime.now():%Y-%m-%d %H:%M} 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
-    건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
+    건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.<br>
+    <span class="uncertain-flag" style="margin-top:8px;display:inline-block">확인필요</span> 표시는 제목에 품목명이 안 적혀있어
+    축산물인지 자동으로 확신할 수 없는 소액수의 공고입니다. 직접 확인해주세요.
   </footer>
 </div>
 </body>
@@ -1066,6 +1081,11 @@ def main():
     now_str = datetime.now().strftime("%Y%m%d%H%M%S%f")[:17]
     matches = [r for r in all_rows if matches_filter(r, config["item_keywords"], config.get("exclude_keywords", []), now_str)]
     log(f"품목 키워드에 맞는 공고 {len(matches)}건")
+    for r in matches:
+        r["_uncertain"] = is_uncertain_match(r.get("BID_NM", ""), config["item_keywords"])
+    uncertain_count = sum(1 for r in matches if r["_uncertain"])
+    if uncertain_count:
+        log(f"  그 중 품목 미기재로 확인 필요한 건 {uncertain_count}건")
 
     enrich_with_detail(matches)
     log("상세정보(기초가격/입찰기간/개찰일시 등) 보강 완료")

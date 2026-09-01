@@ -2,8 +2,8 @@
   "region_keyword": "포항",
   "ctpv_cd": "14",
   "sgg_cd": "717",
-  "item_keywords": ["고기", "축산", "돼지", "육류", "한우", "축산물"],
-  "exclude_keywords": ["부식"],
+  "item_keywords": ["고기", "축산", "돼지", "육류", "한우", "축산물", "소액수의"],
+  "exclude_keywords": ["부식", "소채류", "수산물", "농수산물", "농공수산물", "농수공산품", "가금류", "공산품", "농산물"],
   "bid_status_code": "ing2",
   "page_size": 200,
   "smtp": {
