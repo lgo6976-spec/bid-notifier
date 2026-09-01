@@ -31,8 +31,13 @@ Branch: `main` / `/(root)` 선택 후 저장. 몇 분 뒤
 
 ## 필터 조건 조정
 
-`config.json` 의 `region_keyword`/`ctpv_cd`/`sgg_cd`/`item_keywords` 를 수정하면 됩니다.
+`config.json` 의 `region_keyword`/`ctpv_cd`/`sgg_cd`/`item_keywords`/`exclude_keywords` 를 수정하면 됩니다.
 (비밀번호 관련 값은 Secrets로 관리되므로 이 파일에는 실제 값을 넣지 않습니다.)
+
+- `item_keywords`: 입찰명에 이 중 하나라도 포함되면 매칭 (예: 육류, 축산 등)
+- `exclude_keywords`: 입찰명에 이 중 하나라도 포함되면 다른 조건과 상관없이 제외.
+  기본값 `["부식"]` — "부식(육류)"처럼 축산 키워드가 같이 있어도 "부식" 통합구매 공고는
+  축산 전용 공고가 아니므로 제외한다.
 
 ## 동작 방식
 

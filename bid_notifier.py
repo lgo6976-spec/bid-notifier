@@ -266,12 +266,14 @@ def fetch_bid_detail(bid_id):
     return d
 
 
-def matches_filter(row, item_keywords, now_str):
+def matches_filter(row, item_keywords, exclude_keywords, now_str):
     # 지역(시/군)은 이미 API 요청 단계에서 P_CTPV_CD/P_SGG_CD로 서버가 걸러줬으므로
     # 여기서는 마감 여부와 품목 키워드만 확인하면 된다.
     if row.get("BID_END_DT", "") < now_str:
         return False  # 이미 마감된 공고는 제외
     bid_nm = row.get("BID_NM", "")
+    if any(kw in bid_nm for kw in exclude_keywords):
+        return False  # "부식"처럼 축산/육류 전용이 아닌 통합구매 공고는 제외
     return any(kw in bid_nm for kw in item_keywords)
 
 
@@ -674,7 +676,7 @@ def main():
     log(f"{config['region_keyword']} 지역 공고 {len(all_rows)}건 수집")
 
     now_str = datetime.now().strftime("%Y%m%d%H%M%S%f")[:17]
-    matches = [r for r in all_rows if matches_filter(r, config["item_keywords"], now_str)]
+    matches = [r for r in all_rows if matches_filter(r, config["item_keywords"], config.get("exclude_keywords", []), now_str)]
     log(f"품목 키워드에 맞는 공고 {len(matches)}건")
 
     enrich_with_detail(matches)

@@ -3,6 +3,7 @@
   "ctpv_cd": "14",
   "sgg_cd": "717",
   "item_keywords": ["고기", "축산", "돼지", "육류", "한우", "축산물"],
+  "exclude_keywords": ["부식"],
   "bid_status_code": "ing2",
   "page_size": 200,
   "smtp": {
