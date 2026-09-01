@@ -105,6 +105,59 @@
     margin-top: 1px; font-size: 12.5px; line-height: 1.65; color: var(--ink-dim); }
   .qlfc-note .k { display: block; font-size: 11px; color: var(--ink-faint);
     letter-spacing: .02em; margin-bottom: 3px; }
+  .predict-box { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 11px;
+    margin-top: 1px; }
+  .predict-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .predict-head .k { font-size: 11px; color: var(--ink-faint); letter-spacing: .02em; }
+  .predict-head .v { font-size: 11.5px; color: var(--ink-dim); }
+  .predict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+  .predict-tier { border-radius: 8px; padding: 8px 10px; background: var(--surface-2); }
+  .predict-tier.t-aggr { background: var(--urgent-soft); }
+  .predict-tier.t-std  { background: var(--soon-soft); }
+  .predict-tier.t-cons { background: var(--ok-soft); }
+  .predict-tier.t-safe { background: var(--accent-soft); }
+  .predict-tier .p-label { font-size: 10.5px; font-weight: 700; letter-spacing: .03em; }
+  .predict-tier.t-aggr .p-label { color: var(--urgent); }
+  .predict-tier.t-std  .p-label { color: var(--soon); }
+  .predict-tier.t-cons .p-label { color: var(--ok); }
+  .predict-tier.t-safe .p-label { color: var(--accent); }
+  .predict-tier .p-amt { font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
+    color: var(--ink); margin-top: 3px; white-space: nowrap; }
+  .predict-tier .p-prob { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
+  .predict-note { grid-column: 1 / -1; font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
+  .competitor-section { margin: 32px 0 40px; }
+  .competitor-head { display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px 16px; margin-bottom: 14px; }
+  .competitor-head .section-label { margin: 0; }
+  .year-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .year-tab { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink-dim); background: var(--surface); border: 1px solid var(--border);
+    border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+  .year-tab:hover { color: var(--ink); }
+  .year-tab.active { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
+  .mibo-highlight { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px 16px; }
+  .mibo-highlight .m-name { grid-column: 1 / -1; font-size: 13px; font-weight: 600; color: var(--accent);
+    margin-bottom: 2px; }
+  .mibo-highlight .m-stat .m-num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 20px; font-weight: 700; color: var(--ink); }
+  .mibo-highlight .m-stat .m-label { font-size: 11.5px; color: var(--ink-dim); margin-top: 1px; }
+  .leaderboard-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: var(--shadow); }
+  .leaderboard { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+  .leaderboard th { text-align: left; font-size: 11px; font-weight: 600; color: var(--ink-faint);
+    letter-spacing: .02em; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .leaderboard td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--ink); }
+  .leaderboard tbody tr:last-child td { border-bottom: none; }
+  .leaderboard tr.is-us { background: var(--accent-soft); font-weight: 600; }
+  .leaderboard td.num, .leaderboard td.amt { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+  .leaderboard td.rank { color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+  .wr-cell { display: flex; align-items: center; gap: 8px; }
+  .wr-bar-track { background: var(--surface-2); border-radius: 4px; height: 6px; width: 56px; overflow: hidden; flex-shrink: 0; }
+  .wr-bar-fill { background: var(--accent); height: 100%; }
+  .is-us .wr-bar-fill { background: var(--accent); }
+  .competitor-note { font-size: 11.5px; color: var(--ink-faint); margin-top: 10px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
     color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
   footer code { font-family: "IBM Plex Mono", monospace; background: var(--surface-2);
@@ -128,14 +181,442 @@
     <div class="stat"><div class="num">0</div><div class="label">조건에 맞는 공고</div></div>
     <div class="stat"><div class="num">0</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">포항</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">9월 1일</div><div class="label">수집 시각 03:20</div></div>
+    <div class="stat"><div class="num">9월 1일</div><div class="label">수집 시각 08:28</div></div>
   </div>
+  
+  <div class="competitor-section">
+    <div class="competitor-head">
+      <p class="section-label">경쟁 현황 <span class="count">누적 이력</span></p>
+      <div class="year-tabs"><button type="button" class="year-tab active" data-period="all">전체</button><button type="button" class="year-tab" data-period="2026">2026</button><button type="button" class="year-tab" data-period="2025">2025</button><button type="button" class="year-tab" data-period="2024">2024</button><button type="button" class="year-tab" data-period="2023">2023</button></div>
+    </div>
+    
+    <div class="competitor-view" data-period-view="all" >
+      
+      <div class="mibo-highlight">
+        <div class="m-name">장기농장 미보축산 (우리 회사) · 전체 기간</div>
+        <div class="m-stat"><div class="m-num">136</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">31</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">22.8%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">294,093,200원</div><div class="m-label">낙찰총액</div></div>
+        <div class="m-stat"><div class="m-num">#3</div><div class="m-label">낙찰횟수 순위</div></div>
+      </div>
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="rank">1</td>
+          <td>태화축산</td>
+          <td class="num">163</td>
+          <td class="num">47</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:29%"></div></div>28.8%</div></td>
+          <td class="amt">392,020,390원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">2</td>
+          <td>신포항축산 영농조합법인</td>
+          <td class="num">150</td>
+          <td class="num">35</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:23%"></div></div>23.3%</div></td>
+          <td class="amt">324,255,858원</td>
+          <td>2026-07-22</td>
+        </tr>
+        <tr class="is-us">
+          <td class="rank">3</td>
+          <td>장기농장 미보축산 (우리)</td>
+          <td class="num">136</td>
+          <td class="num">31</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:23%"></div></div>22.8%</div></td>
+          <td class="amt">294,093,200원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">4</td>
+          <td>선진푸드(주)</td>
+          <td class="num">76</td>
+          <td class="num">21</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:28%"></div></div>27.6%</div></td>
+          <td class="amt">204,476,500원</td>
+          <td>2024-12-24</td>
+        </tr>
+        <tr class="">
+          <td class="rank">5</td>
+          <td>(주)신선푸드</td>
+          <td class="num">88</td>
+          <td class="num">14</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:16%"></div></div>15.9%</div></td>
+          <td class="amt">179,634,740원</td>
+          <td>2025-09-25</td>
+        </tr>
+        <tr class="">
+          <td class="rank">6</td>
+          <td>주식회사 제우에프앤티</td>
+          <td class="num">26</td>
+          <td class="num">11</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:42%"></div></div>42.3%</div></td>
+          <td class="amt">128,566,300원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">7</td>
+          <td>다래푸드(포항)</td>
+          <td class="num">15</td>
+          <td class="num">3</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:20%"></div></div>20.0%</div></td>
+          <td class="amt">47,200,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">8</td>
+          <td>(주)자연씨앤에프</td>
+          <td class="num">10</td>
+          <td class="num">3</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:30%"></div></div>30.0%</div></td>
+          <td class="amt">14,191,500원</td>
+          <td>2025-11-24</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="competitor-view" data-period-view="2026" hidden>
+      
+      <div class="mibo-highlight">
+        <div class="m-name">장기농장 미보축산 (우리 회사) · 2026년</div>
+        <div class="m-stat"><div class="m-num">10</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">3</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">30.0%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">35,467,000원</div><div class="m-label">낙찰총액</div></div>
+        <div class="m-stat"><div class="m-num">#4</div><div class="m-label">낙찰횟수 순위</div></div>
+      </div>
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="rank">1</td>
+          <td>태화축산</td>
+          <td class="num">15</td>
+          <td class="num">4</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:27%"></div></div>26.7%</div></td>
+          <td class="amt">38,436,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">2</td>
+          <td>주식회사 제우에프앤티</td>
+          <td class="num">10</td>
+          <td class="num">4</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:40%"></div></div>40.0%</div></td>
+          <td class="amt">41,860,800원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">3</td>
+          <td>신포항축산 영농조합법인</td>
+          <td class="num">14</td>
+          <td class="num">3</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:21%"></div></div>21.4%</div></td>
+          <td class="amt">35,731,540원</td>
+          <td>2026-07-22</td>
+        </tr>
+        <tr class="is-us">
+          <td class="rank">4</td>
+          <td>장기농장 미보축산 (우리)</td>
+          <td class="num">10</td>
+          <td class="num">3</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:30%"></div></div>30.0%</div></td>
+          <td class="amt">35,467,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="competitor-view" data-period-view="2025" hidden>
+      
+      <div class="mibo-highlight">
+        <div class="m-name">장기농장 미보축산 (우리 회사) · 2025년</div>
+        <div class="m-stat"><div class="m-num">36</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">6</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">16.7%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">42,984,000원</div><div class="m-label">낙찰총액</div></div>
+        <div class="m-stat"><div class="m-num">#4</div><div class="m-label">낙찰횟수 순위</div></div>
+      </div>
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="rank">1</td>
+          <td>태화축산</td>
+          <td class="num">49</td>
+          <td class="num">15</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:31%"></div></div>30.6%</div></td>
+          <td class="amt">150,906,500원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">2</td>
+          <td>신포항축산 영농조합법인</td>
+          <td class="num">50</td>
+          <td class="num">12</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:24%"></div></div>24.0%</div></td>
+          <td class="amt">93,648,400원</td>
+          <td>2026-07-22</td>
+        </tr>
+        <tr class="">
+          <td class="rank">3</td>
+          <td>주식회사 제우에프앤티</td>
+          <td class="num">16</td>
+          <td class="num">7</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:44%"></div></div>43.8%</div></td>
+          <td class="amt">86,705,500원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="is-us">
+          <td class="rank">4</td>
+          <td>장기농장 미보축산 (우리)</td>
+          <td class="num">36</td>
+          <td class="num">6</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:17%"></div></div>16.7%</div></td>
+          <td class="amt">42,984,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">5</td>
+          <td>(주)자연씨앤에프</td>
+          <td class="num">10</td>
+          <td class="num">3</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:30%"></div></div>30.0%</div></td>
+          <td class="amt">14,191,500원</td>
+          <td>2025-11-24</td>
+        </tr>
+        <tr class="">
+          <td class="rank">6</td>
+          <td>(주)신선푸드</td>
+          <td class="num">11</td>
+          <td class="num">2</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:18%"></div></div>18.2%</div></td>
+          <td class="amt">20,048,480원</td>
+          <td>2025-09-25</td>
+        </tr>
+        <tr class="">
+          <td class="rank">7</td>
+          <td>다래푸드(포항)</td>
+          <td class="num">5</td>
+          <td class="num">2</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:40%"></div></div>40.0%</div></td>
+          <td class="amt">31,200,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">8</td>
+          <td>진평축산</td>
+          <td class="num">5</td>
+          <td class="num">2</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:40%"></div></div>40.0%</div></td>
+          <td class="amt">10,432,000원</td>
+          <td>2025-11-20</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="competitor-view" data-period-view="2024" hidden>
+      
+      <div class="mibo-highlight">
+        <div class="m-name">장기농장 미보축산 (우리 회사) · 2024년</div>
+        <div class="m-stat"><div class="m-num">46</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">13</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">28.3%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">120,729,000원</div><div class="m-label">낙찰총액</div></div>
+        <div class="m-stat"><div class="m-num">#3</div><div class="m-label">낙찰횟수 순위</div></div>
+      </div>
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="rank">1</td>
+          <td>신포항축산 영농조합법인</td>
+          <td class="num">51</td>
+          <td class="num">13</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:26%"></div></div>25.5%</div></td>
+          <td class="amt">117,864,668원</td>
+          <td>2026-07-22</td>
+        </tr>
+        <tr class="">
+          <td class="rank">2</td>
+          <td>태화축산</td>
+          <td class="num">49</td>
+          <td class="num">13</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:26%"></div></div>26.5%</div></td>
+          <td class="amt">93,514,200원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="is-us">
+          <td class="rank">3</td>
+          <td>장기농장 미보축산 (우리)</td>
+          <td class="num">46</td>
+          <td class="num">13</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:28%"></div></div>28.3%</div></td>
+          <td class="amt">120,729,000원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">4</td>
+          <td>선진푸드(주)</td>
+          <td class="num">44</td>
+          <td class="num">8</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:18%"></div></div>18.2%</div></td>
+          <td class="amt">58,019,000원</td>
+          <td>2024-12-24</td>
+        </tr>
+        <tr class="">
+          <td class="rank">5</td>
+          <td>(주)신선푸드</td>
+          <td class="num">43</td>
+          <td class="num">5</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:12%"></div></div>11.6%</div></td>
+          <td class="amt">60,111,860원</td>
+          <td>2025-09-25</td>
+        </tr>
+        <tr class="">
+          <td class="rank">6</td>
+          <td>(주)경일식품</td>
+          <td class="num">33</td>
+          <td class="num">0</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:0%"></div></div>0.0%</div></td>
+          <td class="amt">0원</td>
+          <td>2024-11-22</td>
+        </tr>
+        <tr class="">
+          <td class="rank">7</td>
+          <td>다래푸드(포항)</td>
+          <td class="num">7</td>
+          <td class="num">0</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:0%"></div></div>0.0%</div></td>
+          <td class="amt">0원</td>
+          <td>2026-08-14</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="competitor-view" data-period-view="2023" hidden>
+      
+      <div class="mibo-highlight">
+        <div class="m-name">장기농장 미보축산 (우리 회사) · 2023년</div>
+        <div class="m-stat"><div class="m-num">44</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">9</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">20.5%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">94,913,200원</div><div class="m-label">낙찰총액</div></div>
+        <div class="m-stat"><div class="m-num">#3</div><div class="m-label">낙찰횟수 순위</div></div>
+      </div>
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="rank">1</td>
+          <td>태화축산</td>
+          <td class="num">50</td>
+          <td class="num">15</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:30%"></div></div>30.0%</div></td>
+          <td class="amt">109,163,690원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">2</td>
+          <td>선진푸드(주)</td>
+          <td class="num">32</td>
+          <td class="num">13</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:41%"></div></div>40.6%</div></td>
+          <td class="amt">146,457,500원</td>
+          <td>2024-12-24</td>
+        </tr>
+        <tr class="is-us">
+          <td class="rank">3</td>
+          <td>장기농장 미보축산 (우리)</td>
+          <td class="num">44</td>
+          <td class="num">9</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:20%"></div></div>20.5%</div></td>
+          <td class="amt">94,913,200원</td>
+          <td>2026-08-14</td>
+        </tr>
+        <tr class="">
+          <td class="rank">4</td>
+          <td>신포항축산 영농조합법인</td>
+          <td class="num">35</td>
+          <td class="num">7</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:20%"></div></div>20.0%</div></td>
+          <td class="amt">77,011,250원</td>
+          <td>2026-07-22</td>
+        </tr>
+        <tr class="">
+          <td class="rank">5</td>
+          <td>(주)신선푸드</td>
+          <td class="num">34</td>
+          <td class="num">7</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:21%"></div></div>20.6%</div></td>
+          <td class="amt">99,474,400원</td>
+          <td>2025-09-25</td>
+        </tr>
+        <tr class="">
+          <td class="rank">6</td>
+          <td>(주)경일식품</td>
+          <td class="num">48</td>
+          <td class="num">0</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:0%"></div></div>0.0%</div></td>
+          <td class="amt">0원</td>
+          <td>2024-11-22</td>
+        </tr>
+        <tr class="">
+          <td class="rank">7</td>
+          <td>(주)포항축산육가공</td>
+          <td class="num">7</td>
+          <td class="num">0</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:0%"></div></div>0.0%</div></td>
+          <td class="amt">0원</td>
+          <td>2023-07-26</td>
+        </tr>
+        <tr class="">
+          <td class="rank">8</td>
+          <td>(주)행운푸드</td>
+          <td class="num">3</td>
+          <td class="num">0</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:0%"></div></div>0.0%</div></td>
+          <td class="amt">0원</td>
+          <td>2024-04-18</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="competitor-note">낙찰횟수 기준 상위 업체 + 미보축산(참여 3건 미만 소규모 업체는 표에서 제외, 단 미보축산은 항상 표시). 과거 이력 기준이며 향후 결과를 보장하지 않습니다.</div>
+  </div>
+  <script>
+  (function() {
+    var tabs = document.querySelectorAll('.year-tab');
+    var views = document.querySelectorAll('.competitor-view');
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var period = btn.getAttribute('data-period');
+        tabs.forEach(function(b) { b.classList.toggle('active', b === btn); });
+        views.forEach(function(v) { v.hidden = v.getAttribute('data-period-view') !== period; });
+      });
+    });
+  })();
+  </script>
   <p class="section-label">진행중인 공고 <span class="count">0건</span></p>
   <div class="cards">
     <p style="color:var(--ink-dim)">현재 조건에 맞는 공고가 없습니다.</p>
   </div>
   <footer>
-    이 페이지는 2026-09-01 03:20 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
+    이 페이지는 2026-09-01 08:28 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
     건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
   </footer>
