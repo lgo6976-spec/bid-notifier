@@ -23,6 +23,8 @@ from email.mime.text import MIMEText
 from email.header import Header
 from xml.etree import ElementTree as ET
 
+import predictor
+
 _BAD_AMP_RE = re.compile(r"&(?!#\d+;|#x[0-9A-Fa-f]+;|amp;|lt;|gt;|apos;|quot;)")
 _BAD_CTRL_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
 
@@ -349,7 +351,38 @@ def enrich_with_detail(matches):
             continue
         detail = fetch_bid_detail(bid_id)
         r["_detail"] = detail
+        r["_prediction"] = compute_prediction(r, detail)
     return matches
+
+
+def compute_prediction(r, detail):
+    """과거 169건 낙찰이력 기반 낙찰 확률/추천 입찰가 예측(predictor.py).
+    기초가격이나 공고문 최저가(PLNPRCE_SUCBD_STD)를 못 구하면 조용히 None을 돌려준다
+    (알림 자체는 예측 없이도 계속 진행되어야 하므로)."""
+    try:
+        school = r.get("PURR_NM", "")
+        bgng_prc = int(detail.get("BGNG_PRC") or r.get("STRPRCE") or 0)
+        min_price_pct = float(detail.get("PLNPRCE_SUCBD_STD") or 0)
+        if not school or bgng_prc <= 0 or min_price_pct <= 0:
+            return None
+        return predictor.predict(school, bgng_prc, min_price_pct)
+    except Exception as e:
+        log(f"  WARNING: 낙찰 예측 계산 실패: {e}")
+        return None
+
+
+def format_prediction_text(pred):
+    """예측 결과를 이메일용 텍스트 블록으로 포맷. pred가 None이면 빈 문자열."""
+    if not pred:
+        return ""
+    lines = [f"   ── 낙찰 예측 (과거 {pred['source']} 기반, 참여 {pred['n_participants']}개사 {pred['n_note']}) ──"]
+    for t in pred["tiers"]:
+        lines.append(
+            f"     {t['label']:<4} {t['ratio']:.2f}% -> {t['amount']:,}원  "
+            f"(이 공고 예상확률 약 {t['prob']}% / 등급 검증성공률 {t['backtest_rate']:.1f}%)"
+        )
+    lines.append("     ※ 참고용 통계 추정치이며 실제 결과를 보장하지 않습니다.\n")
+    return "\n".join(lines) + "\n"
 
 
 def send_email(matches, new_count, config):
@@ -379,6 +412,7 @@ def send_email(matches, new_count, config):
             f"   지역제한: {d.get('LIMIT_CONDITION_NM') or r.get('LIMIT_CONDITION_NM','')}\n"
             f"   낙찰방법: {d.get('SUCBD_DECISION_MTHD_NM') or r.get('SUCBD_DECISION_MTHD_NM','')}\n"
             + (f"   자격조건: {d.get('ETC_QLFC_LMT_CN')}\n" if d.get("ETC_QLFC_LMT_CN") else "")
+            + format_prediction_text(r.get("_prediction"))
         )
 
     body = (
@@ -495,6 +529,26 @@ DASHBOARD_CSS = """
     margin-top: 1px; font-size: 12.5px; line-height: 1.65; color: var(--ink-dim); }
   .qlfc-note .k { display: block; font-size: 11px; color: var(--ink-faint);
     letter-spacing: .02em; margin-bottom: 3px; }
+  .predict-box { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 11px;
+    margin-top: 1px; }
+  .predict-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .predict-head .k { font-size: 11px; color: var(--ink-faint); letter-spacing: .02em; }
+  .predict-head .v { font-size: 11.5px; color: var(--ink-dim); }
+  .predict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+  .predict-tier { border-radius: 8px; padding: 8px 10px; background: var(--surface-2); }
+  .predict-tier.t-aggr { background: var(--urgent-soft); }
+  .predict-tier.t-std  { background: var(--soon-soft); }
+  .predict-tier.t-cons { background: var(--ok-soft); }
+  .predict-tier.t-safe { background: var(--accent-soft); }
+  .predict-tier .p-label { font-size: 10.5px; font-weight: 700; letter-spacing: .03em; }
+  .predict-tier.t-aggr .p-label { color: var(--urgent); }
+  .predict-tier.t-std  .p-label { color: var(--soon); }
+  .predict-tier.t-cons .p-label { color: var(--ok); }
+  .predict-tier.t-safe .p-label { color: var(--accent); }
+  .predict-tier .p-amt { font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600;
+    color: var(--ink); margin-top: 3px; white-space: nowrap; }
+  .predict-tier .p-prob { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
+  .predict-note { grid-column: 1 / -1; font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
     color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
   footer code { font-family: "IBM Plex Mono", monospace; background: var(--surface-2);
@@ -545,6 +599,31 @@ def password_gate_html(password):
 </script>"""
 
 
+_TIER_CLASS = {"공격적": "t-aggr", "표준": "t-std", "보수적": "t-cons", "최대안전": "t-safe"}
+
+
+def predict_box_html(pred):
+    """예측 결과를 카드 안에 넣을 HTML 블록으로 렌더링. pred가 None이면 빈 문자열."""
+    if not pred:
+        return ""
+    tiers_html = "".join(f"""
+        <div class="predict-tier {_TIER_CLASS.get(t['label'], '')}">
+          <div class="p-label">{html_escape(t['label'])}</div>
+          <div class="p-amt">{t['amount']:,}원</div>
+          <div class="p-prob">{t['ratio']:.2f}% · 예상 {t['prob']}%</div>
+        </div>""" for t in pred["tiers"])
+    return f"""
+      <div class="predict-box">
+        <div class="predict-head">
+          <span class="k">낙찰 예측</span>
+          <span class="v">{html_escape(pred['source'])} · 예상참여 {pred['n_participants']}개사({html_escape(pred['n_note'])})</span>
+        </div>
+        <div class="predict-grid">{tiers_html}
+        </div>
+        <div class="predict-note">참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. (등급별 %는 169건 백테스트 검증 성공률)</div>
+      </div>"""
+
+
 def write_dashboard(matches, seen_before_this_run, config):
     matches_sorted = sorted(matches, key=lambda r: r.get("BID_END_DT", ""))
     region = config["region_keyword"]
@@ -587,6 +666,7 @@ def write_dashboard(matches, seen_before_this_run, config):
       </div>
       {f'<div class="qlfc-note"><span class="k">자격조건</span>{html_escape(qlfc_cn)}</div>' if qlfc_cn else ''}
       {f'<div class="tags">{tags_html}</div>' if tags else ''}
+      {predict_box_html(r.get("_prediction"))}
     </div>""")
 
     html = f"""<!doctype html>
