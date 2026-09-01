@@ -747,14 +747,15 @@ DASHBOARD_CSS = """
     border-radius: 999px; padding: 4px 12px; cursor: pointer; }
   .year-tab:hover { color: var(--ink); }
   .year-tab.active { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
-  .mibo-highlight { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
-    border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px 16px; }
+  .mibo-highlight { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px 12px; margin-bottom: 16px; }
   .mibo-highlight .m-name { grid-column: 1 / -1; font-size: 13px; font-weight: 600; color: var(--accent);
     margin-bottom: 2px; }
-  .mibo-highlight .m-stat .m-num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
-    font-size: 20px; font-weight: 700; color: var(--ink); }
-  .mibo-highlight .m-stat .m-label { font-size: 11.5px; color: var(--ink-dim); margin-top: 1px; }
+  .mibo-highlight .m-stat { background: var(--surface); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+    border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
+  .mibo-highlight .m-stat .m-num { font-family: "Pretendard", "Malgun Gothic", sans-serif;
+    font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .mibo-highlight .m-stat .m-label { font-size: 11.5px; color: var(--ink-dim); margin-top: 2px; }
   .leaderboard-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; box-shadow: var(--shadow); }
   .leaderboard { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
