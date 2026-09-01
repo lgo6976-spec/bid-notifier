@@ -16,6 +16,7 @@ import re
 import smtplib
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta
@@ -24,6 +25,7 @@ from email.header import Header
 from xml.etree import ElementTree as ET
 
 import predictor
+import competitors
 
 _BAD_AMP_RE = re.compile(r"&(?!#\d+;|#x[0-9A-Fa-f]+;|amp;|lt;|gt;|apos;|quot;)")
 _BAD_CTRL_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
@@ -42,6 +44,9 @@ DASHBOARD_PATH = os.path.join(BASE_DIR, os.environ.get("DASHBOARD_FILENAME", "da
 LOG_PATH = os.path.join(BASE_DIR, "run.log")
 SITE_DIR = os.path.join(BASE_DIR, "site")
 SITE_INDEX_PATH = os.path.join(SITE_DIR, "index.html")
+MODEL_DATA_PATH = os.path.join(BASE_DIR, "model_data.json")
+COMPANY_STATS_PATH = os.path.join(BASE_DIR, "company_stats.json")
+PENDING_OUTCOMES_PATH = os.path.join(BASE_DIR, "pending_outcomes.json")
 
 API_URL = "https://ns.eat.co.kr/nm/ep/600/selectTmBidMBidPbancList.do"
 REFERER = "https://ns.eat.co.kr/NeaT/eats/index.html"
@@ -266,6 +271,189 @@ def fetch_bid_detail(bid_id):
     for col in row.findall(f"{{{NS}}}Col"):
         d[col.get("id")] = (col.text or "").strip()
     return d
+
+
+def fetch_bid_outcome(bid_id):
+    """개찰 결과 수집용: ds_info + ds_bidList(전체 참가업체 순위/사정률)를 한 번에 조회한다.
+    아직 낙찰 확정 전(유찰/취소/진행중)이거나 조회 실패면 None."""
+    body = DETAIL_REQUEST_TEMPLATE.format(ns=NS, bid_id=bid_id)
+    try:
+        text = http_post(DETAIL_API_URL, body, timeout=30)
+        root = ET.fromstring(sanitize_xml(text))
+    except Exception as e:
+        log(f"  WARNING: 개찰결과 조회 실패 (ETN_BID_ID={bid_id}): {e}")
+        return None
+
+    info_ds = root.find(f"{{{NS}}}Dataset[@id='ds_info']")
+    info_row = info_ds.find(f"{{{NS}}}Rows/{{{NS}}}Row") if info_ds is not None else None
+    if info_row is None:
+        return None
+    info = {}
+    for col in info_row.findall(f"{{{NS}}}Col"):
+        info[col.get("id")] = (col.text or "").strip()
+
+    if info.get("ELCTRN_BID_STT_NM") != "낙찰":
+        return None  # 아직 낙찰 확정 전
+
+    bidlist_ds = root.find(f"{{{NS}}}Dataset[@id='ds_bidList']")
+    participants = []
+    winner = None
+    if bidlist_ds is not None:
+        for row_el in bidlist_ds.findall(f"{{{NS}}}Rows/{{{NS}}}Row"):
+            row = {}
+            for col in row_el.findall(f"{{{NS}}}Col"):
+                row[col.get("id")] = (col.text or "").strip()
+            participants.append(row)
+            if row.get("RNK") == "1" and row.get("BID_STT_NM") == "낙찰":
+                winner = row
+
+    if not winner:
+        return None
+    return {"info": info, "participants": participants, "winner": winner}
+
+
+def outcome_to_model_record(bid_id, outcome):
+    """fetch_bid_outcome() 결과를 predictor.py가 쓰는 model_data.json 레코드 형식으로 변환.
+    필요한 값이 없거나 이상하면 None(이 건은 학습 데이터로 못 쓴다는 뜻)."""
+    info = outcome["info"]
+    winner = outcome["winner"]
+    try:
+        bgng_prc = int(info.get("BGNG_PRC") or 0)
+        plnprc = int(info.get("ELCTRN_BID_PLNPRC") or 0)
+        std_pct = float(info.get("PLNPRCE_SUCBD_STD") or 0)
+        win_sajeong_pct = float(winner.get("SAJEONG_PCT") or 0)
+        win_bid_amt = int(winner.get("BID_CALC_AMT") or 0)
+    except (TypeError, ValueError):
+        return None
+    if bgng_prc <= 0 or plnprc <= 0 or std_pct <= 0 or win_sajeong_pct <= 0:
+        return None
+    return {
+        "bid_id": bid_id,
+        "school": info.get("PURR_NM", ""),
+        "bid_nm": info.get("BID_NM", ""),
+        "pbanc": info.get("PBANC_YMD", ""),
+        "bgng_prc": bgng_prc,
+        "plnprc": plnprc,
+        "plnprc_ratio": plnprc / bgng_prc,
+        "std_pct": std_pct,
+        "dcsn_mth": info.get("SUCBID_DCSN_MTH_CD", ""),
+        "n_participants": len(outcome["participants"]),
+        "win_sajeong_pct": win_sajeong_pct,
+        "win_bid_amt": win_bid_amt,
+        "margin": win_sajeong_pct - std_pct,
+    }
+
+
+def merge_company_stats(stats, record, participants):
+    """record(한 건의 낙찰 결과)와 그 전체 참가업체 목록을 company_stats.json 누적치에 반영."""
+    year = record["pbanc"][:4]
+    for row in participants:
+        name = (row.get("SHIPPER_NM") or "").replace("\xa0", " ").strip()
+        if not name:
+            continue
+        cs = stats.setdefault(name, {
+            "participations": 0, "wins": 0, "win_rate": 0, "win_amt_total": 0,
+            "schools": {}, "last_pbanc": "", "by_year": {},
+        })
+        cs["participations"] += 1
+        cs["schools"][record["school"]] = cs["schools"].get(record["school"], 0) + 1
+        yr = cs["by_year"].setdefault(year, {"participations": 0, "wins": 0, "win_amt_total": 0, "win_rate": 0})
+        yr["participations"] += 1
+        is_win = row.get("RNK") == "1" and row.get("BID_STT_NM") == "낙찰"
+        if is_win:
+            cs["wins"] += 1
+            cs["win_amt_total"] += record["win_bid_amt"]
+            yr["wins"] += 1
+            yr["win_amt_total"] += record["win_bid_amt"]
+        if record["pbanc"] > cs["last_pbanc"]:
+            cs["last_pbanc"] = record["pbanc"]
+
+    for cs in stats.values():
+        cs["win_rate"] = round(cs["wins"] / cs["participations"] * 100, 1) if cs["participations"] else 0
+        for yr_stat in cs["by_year"].values():
+            yr_stat["win_rate"] = round(yr_stat["wins"] / yr_stat["participations"] * 100, 1) if yr_stat["participations"] else 0
+
+
+def load_json_file(path, default):
+    if not os.path.exists(path):
+        return default
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_json_file(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def update_historical_data(matches, config):
+    """공고 결과가 새로 나올 때마다 model_data.json(낙찰예측 학습데이터)과
+    company_stats.json(업체별 이력)을 계속 누적 갱신한다 - 한 번 만들고 끝나는
+    정적 스냅샷이 아니라, 매일 실행될 때마다 지난 공고들의 개찰 결과를 확인해서
+    새로 확정된 것만 반영한다.
+
+    - pending_outcomes.json: 아직 개찰 결과를 기다리는 공고 목록(오늘 목록에 있는
+      공고를 등록하고, 결과가 확정되면 지운다. 120일 넘게 확정 안 되면 포기하고 지운다)
+    - 개찰일시로부터 최소 1일은 지나야 결과 조회를 시도한다(그 전엔 아직 안 올라옴).
+    """
+    pending = load_json_file(PENDING_OUTCOMES_PATH, {})
+    model_data = load_json_file(MODEL_DATA_PATH, [])
+    company_stats = load_json_file(COMPANY_STATS_PATH, {})
+    known_ids = {r["bid_id"] for r in model_data}
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    for r in matches:
+        bid_id = r.get("ETN_BID_ID")
+        if not bid_id or bid_id in known_ids or bid_id in pending:
+            continue
+        d = r.get("_detail", {})
+        opng_dt = d.get("OPNG_DT", "")
+        if not opng_dt:
+            continue  # 개찰일시를 모르면 나중에 언제 확인해야 할지도 알 수 없으므로 등록 보류
+        pending[bid_id] = {"opng_dt": opng_dt, "first_seen": today}
+
+    now = datetime.now()
+    resolved_ids = []
+    new_records = 0
+    for bid_id, meta in list(pending.items()):
+        if bid_id in known_ids:
+            resolved_ids.append(bid_id)
+            continue
+        try:
+            opng_dt = datetime.strptime(meta.get("opng_dt", "")[:14], "%Y%m%d%H%M%S")
+        except (ValueError, TypeError):
+            resolved_ids.append(bid_id)
+            continue
+        if (now - opng_dt).total_seconds() < 86400:
+            continue  # 개찰 후 최소 1일은 지나야 결과가 올라옴
+
+        outcome = fetch_bid_outcome(bid_id)
+        if outcome:
+            record = outcome_to_model_record(bid_id, outcome)
+            if record:
+                model_data.append(record)
+                merge_company_stats(company_stats, record, outcome["participants"])
+                known_ids.add(bid_id)
+                new_records += 1
+            resolved_ids.append(bid_id)
+        else:
+            first_seen = meta.get("first_seen", "")
+            try:
+                too_old = (now - datetime.strptime(first_seen, "%Y-%m-%d")).days > 120
+            except (ValueError, TypeError):
+                too_old = True
+            if too_old:
+                resolved_ids.append(bid_id)  # 오래 지나도 결과가 안 나오면 유찰/취소로 보고 포기
+        time.sleep(0.1)
+
+    for bid_id in resolved_ids:
+        pending.pop(bid_id, None)
+    save_json_file(PENDING_OUTCOMES_PATH, pending)
+
+    if new_records:
+        save_json_file(MODEL_DATA_PATH, model_data)
+        save_json_file(COMPANY_STATS_PATH, company_stats)
+        log(f"  개찰 결과 신규 반영: {new_records}건 (누적 {len(model_data)}건, 대기중 {len(pending)}건)")
 
 
 def matches_filter(row, item_keywords, exclude_keywords, now_str):
@@ -549,6 +737,39 @@ DASHBOARD_CSS = """
     color: var(--ink); margin-top: 3px; white-space: nowrap; }
   .predict-tier .p-prob { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
   .predict-note { grid-column: 1 / -1; font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
+  .competitor-section { margin: 32px 0 40px; }
+  .competitor-head { display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px 16px; margin-bottom: 14px; }
+  .competitor-head .section-label { margin: 0; }
+  .year-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .year-tab { font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink-dim); background: var(--surface); border: 1px solid var(--border);
+    border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+  .year-tab:hover { color: var(--ink); }
+  .year-tab.active { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
+  .mibo-highlight { background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px 16px; }
+  .mibo-highlight .m-name { grid-column: 1 / -1; font-size: 13px; font-weight: 600; color: var(--accent);
+    margin-bottom: 2px; }
+  .mibo-highlight .m-stat .m-num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 20px; font-weight: 700; color: var(--ink); }
+  .mibo-highlight .m-stat .m-label { font-size: 11.5px; color: var(--ink-dim); margin-top: 1px; }
+  .leaderboard-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: var(--shadow); }
+  .leaderboard { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+  .leaderboard th { text-align: left; font-size: 11px; font-weight: 600; color: var(--ink-faint);
+    letter-spacing: .02em; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .leaderboard td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--ink); }
+  .leaderboard tbody tr:last-child td { border-bottom: none; }
+  .leaderboard tr.is-us { background: var(--accent-soft); font-weight: 600; }
+  .leaderboard td.num, .leaderboard td.amt { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+  .leaderboard td.rank { color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+  .wr-cell { display: flex; align-items: center; gap: 8px; }
+  .wr-bar-track { background: var(--surface-2); border-radius: 4px; height: 6px; width: 56px; overflow: hidden; flex-shrink: 0; }
+  .wr-bar-fill { background: var(--accent); height: 100%; }
+  .is-us .wr-bar-fill { background: var(--accent); }
+  .competitor-note { font-size: 11.5px; color: var(--ink-faint); margin-top: 10px; }
   footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border);
     color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
   footer code { font-family: "IBM Plex Mono", monospace; background: var(--surface-2);
@@ -624,6 +845,92 @@ def predict_box_html(pred):
       </div>"""
 
 
+def _competitor_view_html(period_key, period_label, year, active):
+    """경쟁 현황의 한 기간(전체 또는 특정 연도) 뷰 하나를 렌더링."""
+    us = competitors.get_us(year=year)
+    board = competitors.get_leaderboard(year=year, min_participations=3, top_n=8)
+    if not board:
+        return ""
+
+    us_block = ""
+    if us:
+        rank = next((r["rank"] for r in board if r["is_us"]), None)
+        rank_html = (f'<div class="m-stat"><div class="m-num">#{rank}</div>'
+                     f'<div class="m-label">낙찰횟수 순위</div></div>') if rank else ""
+        us_block = f"""
+      <div class="mibo-highlight">
+        <div class="m-name">{html_escape(us['name'])} (우리 회사) · {period_label}</div>
+        <div class="m-stat"><div class="m-num">{us['participations']}</div><div class="m-label">참여</div></div>
+        <div class="m-stat"><div class="m-num">{us['wins']}</div><div class="m-label">낙찰</div></div>
+        <div class="m-stat"><div class="m-num">{us['win_rate']}%</div><div class="m-label">낙찰률</div></div>
+        <div class="m-stat"><div class="m-num">{us['win_amt_total']:,}원</div><div class="m-label">낙찰총액</div></div>
+        {rank_html}
+      </div>"""
+
+    rows_html = "".join(f"""
+        <tr class="{'is-us' if r['is_us'] else ''}">
+          <td class="rank">{r['rank']}</td>
+          <td>{html_escape(r['name'])}{' (우리)' if r['is_us'] else ''}</td>
+          <td class="num">{r['participations']}</td>
+          <td class="num">{r['wins']}</td>
+          <td><div class="wr-cell"><div class="wr-bar-track"><div class="wr-bar-fill" style="width:{min(100, r['win_rate']):.0f}%"></div></div>{r['win_rate']}%</div></td>
+          <td class="amt">{r['win_amt_total']:,}원</td>
+          <td>{fmt_date(r['last_pbanc'])}</td>
+        </tr>""" for r in board)
+
+    return f"""
+    <div class="competitor-view" data-period-view="{period_key}" {'' if active else 'hidden'}>
+      {us_block}
+      <div class="leaderboard-wrap">
+        <table class="leaderboard">
+          <thead><tr><th>#</th><th>업체</th><th>참여</th><th>낙찰</th><th>낙찰률</th><th>낙찰총액</th><th>최근활동</th></tr></thead>
+          <tbody>{rows_html}
+          </tbody>
+        </table>
+      </div>
+    </div>"""
+
+
+def competitor_section_html():
+    """미보축산 현황 + 경쟁사 순위표(전체/연도별 탭). company_stats.json이 없으면
+    조용히 빈 문자열을 돌려준다. company_stats.json은 매일 실행되는
+    update_historical_data()가 개찰 결과가 새로 나올 때마다 계속 누적 갱신한다."""
+    years = competitors.available_years()
+    all_view = _competitor_view_html("all", "전체 기간", None, active=True)
+    if not all_view:
+        return ""
+    year_views = "".join(
+        _competitor_view_html(y, f"{y}년", y, active=False) for y in years
+    )
+    tabs_html = '<button type="button" class="year-tab active" data-period="all">전체</button>' + "".join(
+        f'<button type="button" class="year-tab" data-period="{y}">{y}</button>' for y in years
+    )
+
+    return f"""
+  <div class="competitor-section">
+    <div class="competitor-head">
+      <p class="section-label">경쟁 현황 <span class="count">누적 이력</span></p>
+      <div class="year-tabs">{tabs_html}</div>
+    </div>
+    {all_view}
+    {year_views}
+    <div class="competitor-note">낙찰횟수 기준 상위 업체 + 미보축산(참여 3건 미만 소규모 업체는 표에서 제외, 단 미보축산은 항상 표시). 과거 이력 기준이며 향후 결과를 보장하지 않습니다.</div>
+  </div>
+  <script>
+  (function() {{
+    var tabs = document.querySelectorAll('.year-tab');
+    var views = document.querySelectorAll('.competitor-view');
+    tabs.forEach(function(btn) {{
+      btn.addEventListener('click', function() {{
+        var period = btn.getAttribute('data-period');
+        tabs.forEach(function(b) {{ b.classList.toggle('active', b === btn); }});
+        views.forEach(function(v) {{ v.hidden = v.getAttribute('data-period-view') !== period; }});
+      }});
+    }});
+  }})();
+  </script>"""
+
+
 def write_dashboard(matches, seen_before_this_run, config):
     matches_sorted = sorted(matches, key=lambda r: r.get("BID_END_DT", ""))
     region = config["region_keyword"]
@@ -696,6 +1003,7 @@ def write_dashboard(matches, seen_before_this_run, config):
     <div class="stat"><div class="num">{region}</div><div class="label">지역 필터</div></div>
     <div class="stat"><div class="num">{datetime.now().month}월 {datetime.now().day}일</div><div class="label">수집 시각 {datetime.now():%H:%M}</div></div>
   </div>
+  {competitor_section_html()}
   <p class="section-label">진행중인 공고 <span class="count">{len(matches_sorted)}건</span></p>
   <div class="cards">
     {"".join(cards_html) if cards_html else '<p style="color:var(--ink-dim)">현재 조건에 맞는 공고가 없습니다.</p>'}
@@ -761,6 +1069,11 @@ def main():
 
     enrich_with_detail(matches)
     log("상세정보(기초가격/입찰기간/개찰일시 등) 보강 완료")
+
+    try:
+        update_historical_data(matches, config)
+    except Exception as e:
+        log(f"WARNING: 개찰결과 누적 갱신 실패: {e}")
 
     seen_before = dict(seen)  # snapshot for dashboard/email "NEW" marking
     matches_sorted = sorted(matches, key=lambda r: r.get("BID_END_DT", ""))

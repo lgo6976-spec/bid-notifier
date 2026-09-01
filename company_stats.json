@@ -1,0 +1,685 @@
+{
+  "다래푸드(포항)": {
+    "participations": 15,
+    "wins": 3,
+    "win_rate": 20.0,
+    "win_amt_total": 47200000,
+    "schools": {
+      "포항여자고등학교": 1,
+      "포항장성고등학교": 2,
+      "신흥중학교": 5,
+      "유성여자고등학교": 2,
+      "포항이동고등학교": 2,
+      "동지여자고등학교": 1,
+      "장량초등학교": 1,
+      "장흥중학교": 1
+    },
+    "last_pbanc": "20260814",
+    "by_year": {
+      "2026": {
+        "participations": 2,
+        "wins": 1,
+        "win_amt_total": 16000000,
+        "win_rate": 50.0
+      },
+      "2025": {
+        "participations": 5,
+        "wins": 2,
+        "win_amt_total": 31200000,
+        "win_rate": 40.0
+      },
+      "2024": {
+        "participations": 7,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      },
+      "2023": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "태화축산": {
+    "participations": 163,
+    "wins": 47,
+    "win_rate": 28.8,
+    "win_amt_total": 392020390,
+    "schools": {
+      "포항여자고등학교": 5,
+      "대동고등학교": 28,
+      "대구교육해양수련원": 26,
+      "포항장성고등학교": 12,
+      "포항항도중학교": 1,
+      "포항여자전자고등학교": 2,
+      "포항영신고등학교": 1,
+      "유성여자고등학교": 13,
+      "영일중학교": 12,
+      "창포중학교": 2,
+      "포항이동고등학교": 7,
+      "동지여자고등학교": 12,
+      "포항원동초등학교": 3,
+      "포항예술고등학교": 7,
+      "상도중학교": 5,
+      "대흥중학교": 3,
+      "신흥중학교": 8,
+      "장흥중학교": 3,
+      "연일초등학교": 3,
+      "초곡초등학교": 1,
+      "장량초등학교": 1,
+      "환호여자중학교": 2,
+      "문덕초등학교": 1,
+      "양서초등학교": 1,
+      "대도중학교": 2,
+      "구정초등학교": 1,
+      "포항해맞이초등학교": 1
+    },
+    "last_pbanc": "20260814",
+    "by_year": {
+      "2026": {
+        "participations": 15,
+        "wins": 4,
+        "win_amt_total": 38436000,
+        "win_rate": 26.7
+      },
+      "2025": {
+        "participations": 49,
+        "wins": 15,
+        "win_amt_total": 150906500,
+        "win_rate": 30.6
+      },
+      "2024": {
+        "participations": 49,
+        "wins": 13,
+        "win_amt_total": 93514200,
+        "win_rate": 26.5
+      },
+      "2023": {
+        "participations": 50,
+        "wins": 15,
+        "win_amt_total": 109163690,
+        "win_rate": 30.0
+      }
+    }
+  },
+  "장기농장 미보축산": {
+    "participations": 136,
+    "wins": 31,
+    "win_rate": 22.8,
+    "win_amt_total": 294093200,
+    "schools": {
+      "포항여자고등학교": 4,
+      "포항장성고등학교": 12,
+      "대동고등학교": 27,
+      "대구교육해양수련원": 20,
+      "포항항도중학교": 1,
+      "영일중학교": 12,
+      "창포중학교": 2,
+      "동지여자고등학교": 11,
+      "유성여자고등학교": 9,
+      "대흥중학교": 3,
+      "포항이동고등학교": 6,
+      "신흥중학교": 7,
+      "장흥중학교": 3,
+      "연일초등학교": 3,
+      "포항원동초등학교": 2,
+      "초곡초등학교": 1,
+      "포항예술고등학교": 2,
+      "장량초등학교": 3,
+      "환호여자중학교": 1,
+      "포항여자전자고등학교": 1,
+      "문덕초등학교": 1,
+      "대도중학교": 2,
+      "구정초등학교": 1,
+      "포항해맞이초등학교": 1,
+      "상도중학교": 1
+    },
+    "last_pbanc": "20260814",
+    "by_year": {
+      "2026": {
+        "participations": 10,
+        "wins": 3,
+        "win_amt_total": 35467000,
+        "win_rate": 30.0
+      },
+      "2025": {
+        "participations": 36,
+        "wins": 6,
+        "win_amt_total": 42984000,
+        "win_rate": 16.7
+      },
+      "2024": {
+        "participations": 46,
+        "wins": 13,
+        "win_amt_total": 120729000,
+        "win_rate": 28.3
+      },
+      "2023": {
+        "participations": 44,
+        "wins": 9,
+        "win_amt_total": 94913200,
+        "win_rate": 20.5
+      }
+    }
+  },
+  "주식회사 제우에프앤티": {
+    "participations": 26,
+    "wins": 11,
+    "win_rate": 42.3,
+    "win_amt_total": 128566300,
+    "schools": {
+      "포항여자고등학교": 1,
+      "대구교육해양수련원": 12,
+      "포항장성고등학교": 4,
+      "포항항도중학교": 1,
+      "포항여자전자고등학교": 1,
+      "창포중학교": 1,
+      "포항원동초등학교": 1,
+      "대흥중학교": 1,
+      "신흥중학교": 3,
+      "유성여자고등학교": 1
+    },
+    "last_pbanc": "20260814",
+    "by_year": {
+      "2026": {
+        "participations": 10,
+        "wins": 4,
+        "win_amt_total": 41860800,
+        "win_rate": 40.0
+      },
+      "2025": {
+        "participations": 16,
+        "wins": 7,
+        "win_amt_total": 86705500,
+        "win_rate": 43.8
+      }
+    }
+  },
+  "신포항축산 영농조합법인": {
+    "participations": 150,
+    "wins": 35,
+    "win_rate": 23.3,
+    "win_amt_total": 324255858,
+    "schools": {
+      "대동고등학교": 26,
+      "대구교육해양수련원": 23,
+      "포항장성고등학교": 11,
+      "포항항도중학교": 1,
+      "포항여자전자고등학교": 2,
+      "포항영신고등학교": 1,
+      "유성여자고등학교": 9,
+      "영일중학교": 11,
+      "창포중학교": 2,
+      "포항이동고등학교": 8,
+      "동지여자고등학교": 9,
+      "포항원동초등학교": 3,
+      "포항예술고등학교": 7,
+      "상도중학교": 5,
+      "대흥중학교": 3,
+      "신흥중학교": 9,
+      "장흥중학교": 3,
+      "연일초등학교": 3,
+      "초곡초등학교": 1,
+      "장량초등학교": 2,
+      "환호여자중학교": 2,
+      "포항여자고등학교": 4,
+      "문덕초등학교": 1,
+      "양서초등학교": 1,
+      "대도중학교": 2,
+      "구정초등학교": 1
+    },
+    "last_pbanc": "20260722",
+    "by_year": {
+      "2026": {
+        "participations": 14,
+        "wins": 3,
+        "win_amt_total": 35731540,
+        "win_rate": 21.4
+      },
+      "2025": {
+        "participations": 50,
+        "wins": 12,
+        "win_amt_total": 93648400,
+        "win_rate": 24.0
+      },
+      "2024": {
+        "participations": 51,
+        "wins": 13,
+        "win_amt_total": 117864668,
+        "win_rate": 25.5
+      },
+      "2023": {
+        "participations": 35,
+        "wins": 7,
+        "win_amt_total": 77011250,
+        "win_rate": 20.0
+      }
+    }
+  },
+  "(주)자연씨앤에프": {
+    "participations": 10,
+    "wins": 3,
+    "win_rate": 30.0,
+    "win_amt_total": 14191500,
+    "schools": {
+      "영일중학교": 2,
+      "포항이동고등학교": 1,
+      "동지여자고등학교": 2,
+      "유성여자고등학교": 2,
+      "포항장성고등학교": 2,
+      "대흥중학교": 1
+    },
+    "last_pbanc": "20251124",
+    "by_year": {
+      "2025": {
+        "participations": 10,
+        "wins": 3,
+        "win_amt_total": 14191500,
+        "win_rate": 30.0
+      }
+    }
+  },
+  "장길축산": {
+    "participations": 6,
+    "wins": 2,
+    "win_rate": 33.3,
+    "win_amt_total": 13564500,
+    "schools": {
+      "동지여자고등학교": 5,
+      "포항예술고등학교": 1
+    },
+    "last_pbanc": "20251120",
+    "by_year": {
+      "2025": {
+        "participations": 5,
+        "wins": 1,
+        "win_amt_total": 4081500,
+        "win_rate": 20.0
+      },
+      "2024": {
+        "participations": 1,
+        "wins": 1,
+        "win_amt_total": 9483000,
+        "win_rate": 100.0
+      }
+    }
+  },
+  "진평축산": {
+    "participations": 6,
+    "wins": 2,
+    "win_rate": 33.3,
+    "win_amt_total": 10432000,
+    "schools": {
+      "동지여자고등학교": 5,
+      "포항예술고등학교": 1
+    },
+    "last_pbanc": "20251120",
+    "by_year": {
+      "2025": {
+        "participations": 5,
+        "wins": 2,
+        "win_amt_total": 10432000,
+        "win_rate": 40.0
+      },
+      "2024": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "서해축산": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "동지여자고등학교": 1
+    },
+    "last_pbanc": "20251023",
+    "by_year": {
+      "2025": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "한영상사(포항)": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "포항장성고등학교": 1
+    },
+    "last_pbanc": "20251021",
+    "by_year": {
+      "2025": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "(주)신선푸드": {
+    "participations": 88,
+    "wins": 14,
+    "win_rate": 15.9,
+    "win_amt_total": 179634740,
+    "schools": {
+      "포항이동고등학교": 6,
+      "대동고등학교": 19,
+      "대구교육해양수련원": 12,
+      "유성여자고등학교": 6,
+      "장흥중학교": 2,
+      "영일중학교": 9,
+      "대흥중학교": 1,
+      "동지여자고등학교": 6,
+      "연일초등학교": 3,
+      "포항원동초등학교": 2,
+      "포항장성고등학교": 5,
+      "초곡초등학교": 1,
+      "신흥중학교": 3,
+      "상도중학교": 3,
+      "장량초등학교": 2,
+      "환호여자중학교": 2,
+      "문덕초등학교": 1,
+      "대도중학교": 2,
+      "구정초등학교": 1,
+      "포항해맞이초등학교": 1,
+      "포항여자고등학교": 1
+    },
+    "last_pbanc": "20250925",
+    "by_year": {
+      "2025": {
+        "participations": 11,
+        "wins": 2,
+        "win_amt_total": 20048480,
+        "win_rate": 18.2
+      },
+      "2024": {
+        "participations": 43,
+        "wins": 5,
+        "win_amt_total": 60111860,
+        "win_rate": 11.6
+      },
+      "2023": {
+        "participations": 34,
+        "wins": 7,
+        "win_amt_total": 99474400,
+        "win_rate": 20.6
+      }
+    }
+  },
+  "오름미트": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "포항예술고등학교": 1
+    },
+    "last_pbanc": "20250917",
+    "by_year": {
+      "2025": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "주식회사마스터해썹": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "포항예술고등학교": 1
+    },
+    "last_pbanc": "20250917",
+    "by_year": {
+      "2025": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "주식회사대양푸드": {
+    "participations": 2,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "대동고등학교": 2
+    },
+    "last_pbanc": "20250723",
+    "by_year": {
+      "2025": {
+        "participations": 2,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "선진푸드(주)": {
+    "participations": 76,
+    "wins": 21,
+    "win_rate": 27.6,
+    "win_amt_total": 204476500,
+    "schools": {
+      "유성여자고등학교": 6,
+      "장흥중학교": 3,
+      "영일중학교": 10,
+      "대흥중학교": 1,
+      "동지여자고등학교": 5,
+      "대동고등학교": 6,
+      "연일초등학교": 3,
+      "포항이동고등학교": 6,
+      "포항원동초등학교": 1,
+      "포항예술고등학교": 4,
+      "포항장성고등학교": 6,
+      "대구교육해양수련원": 7,
+      "초곡초등학교": 1,
+      "신흥중학교": 3,
+      "장량초등학교": 3,
+      "상도중학교": 2,
+      "환호여자중학교": 1,
+      "문덕초등학교": 1,
+      "포항여자고등학교": 3,
+      "양서초등학교": 1,
+      "대도중학교": 2,
+      "포항해맞이초등학교": 1
+    },
+    "last_pbanc": "20241224",
+    "by_year": {
+      "2024": {
+        "participations": 44,
+        "wins": 8,
+        "win_amt_total": 58019000,
+        "win_rate": 18.2
+      },
+      "2023": {
+        "participations": 32,
+        "wins": 13,
+        "win_amt_total": 146457500,
+        "win_rate": 40.6
+      }
+    }
+  },
+  "주식회사 메가식자재마트": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "유성여자고등학교": 1
+    },
+    "last_pbanc": "20241224",
+    "by_year": {
+      "2024": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "(주)경일식품": {
+    "participations": 81,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "대흥중학교": 1,
+      "동지여자고등학교": 7,
+      "유성여자고등학교": 7,
+      "포항장성고등학교": 5,
+      "대구교육해양수련원": 7,
+      "초곡초등학교": 1,
+      "신흥중학교": 4,
+      "영일중학교": 8,
+      "포항이동고등학교": 5,
+      "장량초등학교": 3,
+      "대동고등학교": 11,
+      "연일초등학교": 2,
+      "상도중학교": 3,
+      "환호여자중학교": 2,
+      "포항여자전자고등학교": 1,
+      "장흥중학교": 2,
+      "포항원동초등학교": 1,
+      "문덕초등학교": 1,
+      "포항여자고등학교": 3,
+      "양서초등학교": 1,
+      "포항예술고등학교": 2,
+      "대도중학교": 2,
+      "구정초등학교": 1,
+      "포항해맞이초등학교": 1
+    },
+    "last_pbanc": "20241122",
+    "by_year": {
+      "2024": {
+        "participations": 33,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      },
+      "2023": {
+        "participations": 48,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "(주)행운푸드": {
+    "participations": 4,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "대동고등학교": 2,
+      "포항장성고등학교": 1,
+      "포항이동고등학교": 1
+    },
+    "last_pbanc": "20240418",
+    "by_year": {
+      "2024": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      },
+      "2023": {
+        "participations": 3,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "송원": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "상도중학교": 1
+    },
+    "last_pbanc": "20230918",
+    "by_year": {
+      "2023": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "주내미트": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "상도중학교": 1
+    },
+    "last_pbanc": "20230918",
+    "by_year": {
+      "2023": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "신우축산": {
+    "participations": 1,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "상도중학교": 1
+    },
+    "last_pbanc": "20230918",
+    "by_year": {
+      "2023": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  },
+  "(주)포항축산육가공": {
+    "participations": 7,
+    "wins": 0,
+    "win_rate": 0.0,
+    "win_amt_total": 0,
+    "schools": {
+      "대구교육해양수련원": 1,
+      "유성여자고등학교": 3,
+      "동지여자고등학교": 1,
+      "대동고등학교": 2
+    },
+    "last_pbanc": "20230726",
+    "by_year": {
+      "2023": {
+        "participations": 7,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      }
+    }
+  }
+}
