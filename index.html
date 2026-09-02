@@ -78,6 +78,8 @@
   .card-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
   .new-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--accent);
     color: var(--surface); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
+  .uncertain-flag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--soon-soft);
+    color: var(--soon); padding: 1px 6px; border-radius: 4px; margin-top: 3px; flex-shrink: 0; }
   .card-title { font-family: "Pretendard", "Malgun Gothic", sans-serif; font-size: 15px; font-weight: 700;
     line-height: 1.4; text-wrap: balance; letter-spacing: -.01em; }
   .deadline-chip { justify-self: end; align-self: start; display: flex; flex-direction: column;
@@ -175,13 +177,13 @@
     <div class="eyebrow">공공급식통합플랫폼 · 자동 수집</div>
     <h1>포항 축산·육류 입찰 알리미</h1>
     <div class="subhead">전국 학교급식 입찰공고 중 배송지가 포항시인 건만 걸러 모았습니다.</div>
-    <div class="keyword-line"><span class="k">필터 키워드</span><span class="v">고기 · 축산 · 돼지 · 육류 · 한우 · 축산물</span></div>
+    <div class="keyword-line"><span class="k">필터 키워드</span><span class="v">고기 · 축산 · 돼지 · 육류 · 한우 · 축산물 · 소액수의</span></div>
   </header>
   <div class="stat-row">
     <div class="stat"><div class="num">0</div><div class="label">조건에 맞는 공고</div></div>
     <div class="stat"><div class="num">0</div><div class="label">신규 (이번 실행)</div></div>
     <div class="stat"><div class="num">포항</div><div class="label">지역 필터</div></div>
-    <div class="stat"><div class="num">9월 1일</div><div class="label">수집 시각 13:02</div></div>
+    <div class="stat"><div class="num">9월 2일</div><div class="label">수집 시각 03:19</div></div>
   </div>
   
   <div class="competitor-section">
@@ -616,9 +618,11 @@
     <p style="color:var(--ink-dim)">현재 조건에 맞는 공고가 없습니다.</p>
   </div>
   <footer>
-    이 페이지는 2026-09-01 13:02 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
+    이 페이지는 2026-09-02 03:19 수집 결과입니다. 실시간 데이터가 아니라, 하루 한 번(오전 7시) 자동 실행되어 갱신됩니다.<br>
     새 공고는 이메일로 별도 안내됩니다. 기초가격·입찰기간·개찰일시 등은 공고 목록 API와 별도로,
-    건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.
+    건별 상세 API(<code>selectBidDtl.do</code>)를 추가 호출해 보강한 값입니다.<br>
+    <span class="uncertain-flag" style="margin-top:8px;display:inline-block">확인필요</span> 표시는 제목에 품목명이 안 적혀있어
+    축산물인지 자동으로 확신할 수 없는 소액수의 공고입니다. 직접 확인해주세요.
   </footer>
 </div>
 </body>
