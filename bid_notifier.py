@@ -395,11 +395,16 @@ def update_historical_data(matches, config):
     - pending_outcomes.json: 아직 개찰 결과를 기다리는 공고 목록(오늘 목록에 있는
       공고를 등록하고, 결과가 확정되면 지운다. 120일 넘게 확정 안 되면 포기하고 지운다)
     - 개찰일시로부터 최소 1일은 지나야 결과 조회를 시도한다(그 전엔 아직 안 올라옴).
-    """
+
+    반환값: 이번 실행에서 새로 확정된 결과 목록(이메일 알림용). 각 항목은
+    {school, bid_nm, is_win, our_sajeong_pct, our_rank, win_sajeong_pct, win_bid_amt,
+    n_participants, participated} - participated=False면 우리가 그 건에 참여하지
+    않았다는 뜻(그래도 이력 학습용으로는 반영됨)."""
     pending = load_json_file(PENDING_OUTCOMES_PATH, {})
     model_data = load_json_file(MODEL_DATA_PATH, [])
     company_stats = load_json_file(COMPANY_STATS_PATH, {})
     known_ids = {r["bid_id"] for r in model_data}
+    newly_resolved = []
 
     today = datetime.now().strftime("%Y-%m-%d")
     for r in matches:
@@ -435,6 +440,7 @@ def update_historical_data(matches, config):
                 merge_company_stats(company_stats, record, outcome["participants"])
                 known_ids.add(bid_id)
                 new_records += 1
+                newly_resolved.append(_build_result_notice(record, outcome))
             resolved_ids.append(bid_id)
         else:
             first_seen = meta.get("first_seen", "")
@@ -454,6 +460,34 @@ def update_historical_data(matches, config):
         save_json_file(MODEL_DATA_PATH, model_data)
         save_json_file(COMPANY_STATS_PATH, company_stats)
         log(f"  개찰 결과 신규 반영: {new_records}건 (누적 {len(model_data)}건, 대기중 {len(pending)}건)")
+
+    return newly_resolved
+
+
+def _build_result_notice(record, outcome):
+    """방금 확정된 개찰 결과 하나를 이메일 알림용 dict로 변환.
+    우리 회사(장기농장 미보축산)가 그 건에 참여했는지, 참여했다면 이겼는지까지 담는다."""
+    our = next((p for p in outcome["participants"] if (p.get("SHIPPER_NM") or "").replace("\xa0", " ").strip() == competitors.OUR_COMPANY), None)
+    if our:
+        try:
+            our_sajeong_pct = float(our.get("SAJEONG_PCT") or 0)
+        except (TypeError, ValueError):
+            our_sajeong_pct = None
+        is_win = our.get("RNK") == "1" and our.get("BID_STT_NM") == "낙찰"
+    else:
+        our_sajeong_pct = None
+        is_win = None
+    return {
+        "school": record["school"],
+        "bid_nm": record["bid_nm"],
+        "participated": our is not None,
+        "is_win": is_win,
+        "our_sajeong_pct": our_sajeong_pct,
+        "our_rank": our.get("RNK") if our else None,
+        "win_sajeong_pct": record["win_sajeong_pct"],
+        "win_bid_amt": record["win_bid_amt"],
+        "n_participants": record["n_participants"],
+    }
 
 
 def matches_filter(row, item_keywords, exclude_keywords, now_str):
@@ -585,12 +619,41 @@ def format_prediction_text(pred):
     return "\n".join(lines) + "\n"
 
 
-def send_email(matches, new_count, config):
-    """matches: 현재 조건에 맞는 전체 목록(마감순 정렬). 그 중 신규인 것만 앞에
-    [신규] 표시를 붙여서, 한 메일 안에서 전체 현황 + 무엇이 새로 생겼는지를
-    같이 보여준다. new_count == 0 이면 호출하지 않는다(호출부에서 체크)."""
+def format_result_notice(result):
+    """방금 확정된 개찰 결과 하나를 이메일용 텍스트 블록으로 포맷."""
+    if not result["participated"]:
+        outcome_label = "우리 미참여"
+    elif result["is_win"]:
+        outcome_label = "★ 낙찰 성공"
+    else:
+        outcome_label = "낙찰 실패"
+    lines = [f"■ [{outcome_label}] {result['bid_nm']}", f"   수요기관: {result['school']}"]
+    if result["participated"]:
+        lines.append(f"   우리 사정률: {result['our_sajeong_pct']}% ({result['our_rank']}위 / 참여 {result['n_participants']}개사)")
+    else:
+        lines.append(f"   참여사수: {result['n_participants']}개사")
+    lines.append(f"   낙찰: {result['win_sajeong_pct']}% · {result['win_bid_amt']:,}원")
+    return "\n".join(lines) + "\n"
+
+
+def send_email(matches, new_count, config, newly_resolved=None):
+    """matches: 현재 조건에 맞는 전체 목록(신규가 맨 앞에, 그다음 기존이 마감순).
+    그 중 신규인 것만 앞에 [신규] 표시를 붙여서, 한 메일 안에서 전체 현황 +
+    무엇이 새로 생겼는지를 같이 보여준다.
+    newly_resolved: 이번 실행에서 새로 개찰 결과가 확정된 건들(있으면 메일 맨
+    위에 별도 섹션으로 알린다). new_count와 newly_resolved가 둘 다 없으면
+    호출하지 않는다(호출부에서 체크)."""
     smtp_cfg = config["smtp"]
     recipients = [e.strip() for e in config["recipient_email"].split(",") if e.strip()]
+    newly_resolved = newly_resolved or []
+
+    result_section = ""
+    if newly_resolved:
+        result_section = (
+            f"■■■ 오늘 확정된 개찰 결과 {len(newly_resolved)}건 ■■■\n\n"
+            + "\n".join(format_result_notice(r) for r in newly_resolved)
+            + "\n"
+        )
 
     lines = []
     for r, is_new in matches:
@@ -617,14 +680,19 @@ def send_email(matches, new_count, config):
         )
 
     body = (
-        f"신규 {new_count}건 (현재 조건에 맞는 전체 {len(matches)}건 중)\n\n"
+        result_section
+        + f"신규 {new_count}건 (현재 조건에 맞는 전체 {len(matches)}건 중)\n\n"
         + "\n".join(lines)
         + f"\n\n※ [확인필요] 표시는 제목에 품목명이 안 적혀있어 축산물인지 자동으로 확신할 수 없는 소액수의 공고입니다. 직접 확인해주세요.\n"
         + f"※ 상세/공고문 확인: {REFERER} (로그인 후 '입찰정보 > 입찰공고' 메뉴)\n"
     )
 
+    subject_parts = [f"신규 {new_count}건"]
+    if newly_resolved:
+        subject_parts.append(f"개찰결과 {len(newly_resolved)}건")
+    subject_parts.append(f"전체 {len(matches)}건")
     msg = MIMEText(body, "plain", "utf-8")
-    msg["Subject"] = Header(f"[입찰정보 알리미] 신규 {new_count}건 · 전체 {len(matches)}건 ({config['region_keyword']})", "utf-8")
+    msg["Subject"] = Header(f"[입찰정보 알리미] {' · '.join(subject_parts)} ({config['region_keyword']})", "utf-8")
     msg["From"] = f"{smtp_cfg['from_name']} <{smtp_cfg['user']}>"
     msg["To"] = ", ".join(recipients)
 
@@ -1095,21 +1163,28 @@ def main():
     enrich_with_detail(matches)
     log("상세정보(기초가격/입찰기간/개찰일시 등) 보강 완료")
 
+    newly_resolved = []
     try:
-        update_historical_data(matches, config)
+        newly_resolved = update_historical_data(matches, config)
     except Exception as e:
         log(f"WARNING: 개찰결과 누적 갱신 실패: {e}")
 
     seen_before = dict(seen)  # snapshot for dashboard/email "NEW" marking
-    matches_sorted = sorted(matches, key=lambda r: r.get("BID_END_DT", ""))
+    # 신규 공고를 먼저(맨 위) 보여주고, 그다음 기존 공고를 마감순으로 보여준다.
+    matches_sorted = sorted(
+        matches,
+        key=lambda r: (r.get("ETN_BID_ID") in seen_before, r.get("BID_END_DT", "")),
+    )
     new_count = sum(1 for r in matches_sorted if r.get("ETN_BID_ID") not in seen_before)
     log(f"신규 공고 {new_count}건")
+    if newly_resolved:
+        log(f"방금 확정된 개찰 결과 {len(newly_resolved)}건")
 
-    if new_count:
+    if new_count or newly_resolved:
         try:
             tagged = [(r, r.get("ETN_BID_ID") not in seen_before) for r in matches_sorted]
-            send_email(tagged, new_count, config)
-            log(f"이메일 발송 완료 (신규 {new_count}건 · 전체 {len(matches_sorted)}건)")
+            send_email(tagged, new_count, config, newly_resolved)
+            log(f"이메일 발송 완료 (신규 {new_count}건 · 개찰결과 {len(newly_resolved)}건 · 전체 {len(matches_sorted)}건)")
         except Exception as e:
             log(f"ERROR: 이메일 발송 실패: {e}")
 
