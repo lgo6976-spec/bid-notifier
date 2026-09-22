@@ -613,8 +613,9 @@ def format_prediction_text(pred):
             f"등급 검증무효율 {t['invalid_rate']:.1f}%)"
         )
     lines.append(
-        "     ※ 참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 버퍼를 두지 않아,\n"
-        "       예정가격 추첨이 낮게 나오면 최저가 미달로 무효 처리될 위험이 34~49%로 있습니다.\n"
+        "     ※ 참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 학교별로 최적화된\n"
+        "       여유폭을 쓰지만, 예정가격 추첨이 낮게 나오면 최저가 미달로 무효 처리될 수\n"
+        "       있습니다(등급별 무효위험은 위 '등급 검증무효율' 참고, 이 학교 실측 확률은 '예상확률').\n"
     )
     return "\n".join(lines) + "\n"
 
@@ -915,7 +916,7 @@ def predict_box_html(pred):
         <div class="predict-tier {_TIER_CLASS.get(t['label'], '')}">
           <div class="p-label">{html_escape(t['label'])}</div>
           <div class="p-amt">{t['amount']:,}원</div>
-          <div class="p-prob">{t['ratio']:.2f}% · 예상 {t['prob']}%</div>
+          <div class="p-prob">{t['ratio']:.2f}% · 예상 {t['prob']}% · 무효위험 {t['invalid_rate']:.0f}%</div>
         </div>""" for t in pred["tiers"])
     return f"""
       <div class="predict-box">
@@ -925,8 +926,8 @@ def predict_box_html(pred):
         </div>
         <div class="predict-grid">{tiers_html}
         </div>
-        <div class="predict-note">참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 버퍼를 두지 않아 예정가격 추첨이 낮게 나오면
-        최저가 미달로 무효 처리될 위험이 34~49%로 있습니다 (등급별 %는 174건 백테스트 검증 성공률).</div>
+        <div class="predict-note">참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 학교별로 최적화된 여유폭을 쓰지만
+        예정가격 추첨이 낮게 나오면 최저가 미달로 무효 처리될 수 있습니다(등급별 무효위험 위 참고, 174건 백테스트 검증).</div>
       </div>"""
 
 
