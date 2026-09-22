@@ -552,7 +552,7 @@ def enrich_with_detail(matches):
 
 
 def compute_prediction(r, detail):
-    """과거 169건 낙찰이력 기반 낙찰 확률/추천 입찰가 예측(predictor.py).
+    """과거 낙찰이력 기반 낙찰 확률/추천 입찰가 예측(predictor.py).
     기초가격이나 공고문 최저가(PLNPRCE_SUCBD_STD)를 못 구하면 조용히 None을 돌려준다
     (알림 자체는 예측 없이도 계속 진행되어야 하므로)."""
     try:
