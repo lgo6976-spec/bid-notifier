@@ -29,11 +29,18 @@
   학교 역사에서 단 한 번도 무효였던 적 없는 여유폭).
 
 174건 leave-one-out 백테스트로 검증한 실제 성공률/무효율(실제 predict()
-함수를 그대로 돌려서 확인한 수치, MIN_RECORDS=4 기준):
-  공격적   -> 실제성공률 27.6%  (무효율 45.4%)
-  표준     -> 실제성공률 16.7%  (무효율 14.4%)
-  보수적   -> 실제성공률 17.8%  (무효율  8.0%)
+함수를 그대로 돌려서 확인한 수치, MIN_RECORDS=4 + 아래 동률 버그수정 기준):
+  공격적   -> 실제성공률 27.6%  (무효율 40.8%)
+  표준     -> 실제성공률 18.4%  (무효율  9.8%)
+  보수적   -> 실제성공률 17.2%  (무효율  7.5%)
   최대안전 -> 실제성공률 13.8%  (무효율  6.3%)
+
+※ 2026-09-22 버그 수정: _pick_offset가 승 건수가 동률인 여유폭 중 "가장 먼저
+  찾은(=가장 작은)" 걸 그냥 채택하고 있었다. 포항장성고에서 발견됨 - 공격적
+  등급 기준 offset=0.0과 0.94가 승 3/13으로 동률인데, 무효율은 69%대 0%로
+  전혀 달랐다. 즉 무효 위험만 더 지고 승률 이득은 없는 선택을 하고 있었던
+  것. 동률이면 무효율이 더 낮은 쪽을 고르도록 수정 - 위 수치는 수정 후 값
+  (표준 등급이 특히 개선됨: 16.7%/14.4% -> 18.4%/9.8%, 승률/무효율 둘 다 좋아짐).
 ※ 이전(전체 공통 percentile) 방식 대비 무효율이 크게 낮아졌다(최대안전 기준
   48.9% -> 6.3%). 승률은 등급별로 비슷하거나 소폭 낮아졌지만, 무효(자격
   미달로 아예 경쟁도 못 해보는 것)를 훨씬 많이 피할 수 있다는 게 핵심 이득.
@@ -69,9 +76,9 @@ OFFSET_STEP = 0.02
 
 # (label, 허용 무효율 상한, 실제성공률%, 실제무효율%) - 174건 leave-one-out 검증값
 TIERS = [
-    ("공격적", 1.01, 27.6, 45.4),   # 사실상 무제한 - 승률만 최대화
-    ("표준", 0.20, 16.7, 14.4),
-    ("보수적", 0.05, 17.8, 8.0),
+    ("공격적", 1.01, 27.6, 40.8),   # 사실상 무제한 - 승률만 최대화
+    ("표준", 0.20, 18.4, 9.8),
+    ("보수적", 0.05, 17.2, 7.5),
     ("최대안전", 0.0, 13.8, 6.3),
 ]
 
@@ -122,19 +129,27 @@ def _eval_offset(pool, mean_ratio, offset):
 
 def _pick_offset(pool, mean_ratio, invalid_cap):
     """pool 안에서, 무효율이 invalid_cap 이하이면서 승 건수가 최대가 되는
-    여유폭(%p)을 찾는다. 그런 여유폭이 아예 없으면(극단적으로 흩어진 경우)
+    여유폭(%p)을 찾는다. 승 건수가 같은 여유폭이 여럿이면(흔함) 그중 무효율이
+    가장 낮은 걸 고른다 - 승률 이득 없이 무효 위험만 더 지는 선택을 피하기
+    위함(예: 포항장성고 공격적 등급에서 offset=0.0과 0.94가 승 3/13으로
+    똑같았는데 무효율은 69%대 0%로 차이가 컸던 사례로 발견됨).
+    invalid_cap을 만족하는 여유폭이 아예 없으면(극단적으로 흩어진 경우)
     무효율이 최소가 되는 여유폭으로 대체."""
     n = len(pool)
     steps = int(round(OFFSET_MAX / OFFSET_STEP)) + 1
-    best_offset, best_win = None, -1
-    fallback_offset, fallback_invalid = 0.0, n + 1
+    best_offset, best_win, best_invalid = None, -1, None
+    fallback_offset, fallback_invalid, fallback_win = 0.0, n + 1, -1
     for i in range(steps):
         offset = round(i * OFFSET_STEP, 4)
         invalid, win, _ = _eval_offset(pool, mean_ratio, offset)
-        if invalid < fallback_invalid:
-            fallback_invalid, fallback_offset = invalid, offset
-        if n and invalid / n <= invalid_cap and win > best_win:
-            best_offset, best_win = offset, win
+        # invalid_cap을 만족하는 여유폭이 하나도 없을 때 쓸 대체값: 무효율이
+        # 최소인 여유폭들 중에서도(흔히 여럿 동률) 승 건수가 최대인 걸 고른다
+        # (위 본 로직과 같은 이유 - 동률이면 공짜로 얻을 수 있는 승률을 버리지 않기 위함).
+        if invalid < fallback_invalid or (invalid == fallback_invalid and win > fallback_win):
+            fallback_invalid, fallback_offset, fallback_win = invalid, offset, win
+        if n and invalid / n <= invalid_cap:
+            if win > best_win or (win == best_win and invalid < best_invalid):
+                best_offset, best_win, best_invalid = offset, win, invalid
     return best_offset if best_offset is not None else fallback_offset
 
 
