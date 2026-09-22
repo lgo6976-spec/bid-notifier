@@ -575,9 +575,13 @@ def format_prediction_text(pred):
     for t in pred["tiers"]:
         lines.append(
             f"     {t['label']:<4} {t['ratio']:.2f}% -> {t['amount']:,}원  "
-            f"(이 공고 예상확률 약 {t['prob']}% / 등급 검증성공률 {t['backtest_rate']:.1f}%)"
+            f"(이 공고 예상확률 약 {t['prob']}% / 등급 검증성공률 {t['backtest_rate']:.1f}% / "
+            f"등급 검증무효율 {t['invalid_rate']:.1f}%)"
         )
-    lines.append("     ※ 참고용 통계 추정치이며 실제 결과를 보장하지 않습니다.\n")
+    lines.append(
+        "     ※ 참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 버퍼를 두지 않아,\n"
+        "       예정가격 추첨이 낮게 나오면 최저가 미달로 무효 처리될 위험이 37~49%로 있습니다.\n"
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -853,7 +857,8 @@ def predict_box_html(pred):
         </div>
         <div class="predict-grid">{tiers_html}
         </div>
-        <div class="predict-note">참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. (등급별 %는 169건 백테스트 검증 성공률)</div>
+        <div class="predict-note">참고용 통계 추정치이며 실제 결과를 보장하지 않습니다. 버퍼를 두지 않아 예정가격 추첨이 낮게 나오면
+        최저가 미달로 무효 처리될 위험이 37~49%로 있습니다 (등급별 %는 262건 백테스트 검증 성공률).</div>
       </div>"""
 
 
