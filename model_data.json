@@ -2608,5 +2608,35 @@
     "win_sajeong_pct": 90.779,
     "win_bid_amt": 14693800,
     "margin": 0.7789999999999964
+  },
+  {
+    "bid_id": "5806095",
+    "school": "대구교육해양수련원",
+    "bid_nm": "2026년 10월 대구교육해양수련원 육류 구매 소액수의 안내 공고",
+    "pbanc": "20260916",
+    "bgng_prc": 15785010,
+    "plnprc": 15520316,
+    "plnprc_ratio": 0.9832313061569172,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 4,
+    "win_sajeong_pct": 91.286,
+    "win_bid_amt": 14167900,
+    "margin": 1.2860000000000014
+  },
+  {
+    "bid_id": "5803497",
+    "school": "포항항도중학교",
+    "bid_nm": "22026년 10월 포항항도중학교 학교급식 축산물 구입 소액수의 견적제출 안내공고",
+    "pbanc": "20260916",
+    "bgng_prc": 12420400,
+    "plnprc": 12364073,
+    "plnprc_ratio": 0.9954649608708254,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 4,
+    "win_sajeong_pct": 90.166,
+    "win_bid_amt": 11148200,
+    "margin": 0.16599999999999682
   }
 ]
