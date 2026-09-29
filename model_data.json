@@ -2743,5 +2743,35 @@
     "win_sajeong_pct": 88.051,
     "win_bid_amt": 74070000,
     "margin": 0.05100000000000193
+  },
+  {
+    "bid_id": "5811366",
+    "school": "동지여자고등학교",
+    "bid_nm": "동지여자고등학교 10월 육류 제한입찰",
+    "pbanc": "20260918",
+    "bgng_prc": 7338300,
+    "plnprc": 7317444,
+    "plnprc_ratio": 0.9971579248599812,
+    "std_pct": 84.245,
+    "dcsn_mth": "007",
+    "n_participants": 5,
+    "win_sajeong_pct": 84.299,
+    "win_bid_amt": 6168600,
+    "margin": 0.054000000000002046
+  },
+  {
+    "bid_id": "5812501",
+    "school": "유성여자고등학교",
+    "bid_nm": "10월  유성여자고등학교 축산물 소액수의",
+    "pbanc": "20260921",
+    "bgng_prc": 5328900,
+    "plnprc": 5324904,
+    "plnprc_ratio": 0.9992501266677926,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 4,
+    "win_sajeong_pct": 90.356,
+    "win_bid_amt": 4811400,
+    "margin": 0.35599999999999454
   }
 ]

@@ -46,9 +46,9 @@
     }
   },
   "태화축산": {
-    "participations": 173,
+    "participations": 175,
     "wins": 49,
-    "win_rate": 28.3,
+    "win_rate": 28.0,
     "win_amt_total": 411564190,
     "schools": {
       "포항여자고등학교": 6,
@@ -58,11 +58,11 @@
       "포항항도중학교": 2,
       "포항여자전자고등학교": 4,
       "포항영신고등학교": 2,
-      "유성여자고등학교": 13,
+      "유성여자고등학교": 14,
       "영일중학교": 12,
       "창포중학교": 2,
       "포항이동고등학교": 7,
-      "동지여자고등학교": 12,
+      "동지여자고등학교": 13,
       "포항원동초등학교": 3,
       "포항예술고등학교": 7,
       "상도중학교": 5,
@@ -83,10 +83,10 @@
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 25,
+        "participations": 27,
         "wins": 6,
         "win_amt_total": 57979800,
-        "win_rate": 24.0
+        "win_rate": 22.2
       },
       "2025": {
         "participations": 49,
@@ -109,10 +109,10 @@
     }
   },
   "장기농장 미보축산": {
-    "participations": 145,
-    "wins": 34,
-    "win_rate": 23.4,
-    "win_amt_total": 325583300,
+    "participations": 147,
+    "wins": 35,
+    "win_rate": 23.8,
+    "win_amt_total": 331751900,
     "schools": {
       "포항여자고등학교": 5,
       "포항장성고등학교": 13,
@@ -121,8 +121,8 @@
       "포항항도중학교": 2,
       "영일중학교": 12,
       "창포중학교": 2,
-      "동지여자고등학교": 11,
-      "유성여자고등학교": 9,
+      "동지여자고등학교": 12,
+      "유성여자고등학교": 10,
       "대흥중학교": 3,
       "포항이동고등학교": 6,
       "신흥중학교": 7,
@@ -144,10 +144,10 @@
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 19,
-        "wins": 6,
-        "win_amt_total": 66957100,
-        "win_rate": 31.6
+        "participations": 21,
+        "wins": 7,
+        "win_amt_total": 73125700,
+        "win_rate": 33.3
       },
       "2025": {
         "participations": 36,
@@ -170,9 +170,9 @@
     }
   },
   "주식회사 제우에프앤티": {
-    "participations": 31,
+    "participations": 32,
     "wins": 13,
-    "win_rate": 41.9,
+    "win_rate": 40.6,
     "win_amt_total": 154178200,
     "schools": {
       "포항여자고등학교": 2,
@@ -184,15 +184,15 @@
       "포항원동초등학교": 1,
       "대흥중학교": 1,
       "신흥중학교": 3,
-      "유성여자고등학교": 1
+      "유성여자고등학교": 2
     },
-    "last_pbanc": "20260917",
+    "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 15,
+        "participations": 16,
         "wins": 6,
         "win_amt_total": 67472700,
-        "win_rate": 40.0
+        "win_rate": 37.5
       },
       "2025": {
         "participations": 16,
@@ -203,10 +203,10 @@
     }
   },
   "신포항축산 영농조합법인": {
-    "participations": 160,
-    "wins": 37,
-    "win_rate": 23.1,
-    "win_amt_total": 349268608,
+    "participations": 162,
+    "wins": 38,
+    "win_rate": 23.5,
+    "win_amt_total": 354080008,
     "schools": {
       "대동고등학교": 27,
       "대구교육해양수련원": 25,
@@ -214,11 +214,11 @@
       "포항항도중학교": 2,
       "포항여자전자고등학교": 4,
       "포항영신고등학교": 2,
-      "유성여자고등학교": 9,
+      "유성여자고등학교": 10,
       "영일중학교": 11,
       "창포중학교": 2,
       "포항이동고등학교": 8,
-      "동지여자고등학교": 9,
+      "동지여자고등학교": 10,
       "포항원동초등학교": 3,
       "포항예술고등학교": 7,
       "상도중학교": 5,
@@ -239,10 +239,10 @@
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 24,
-        "wins": 5,
-        "win_amt_total": 60744290,
-        "win_rate": 20.8
+        "participations": 26,
+        "wins": 6,
+        "win_amt_total": 65555690,
+        "win_rate": 23.1
       },
       "2025": {
         "participations": 50,
@@ -288,15 +288,15 @@
     }
   },
   "장길축산": {
-    "participations": 6,
+    "participations": 7,
     "wins": 2,
-    "win_rate": 33.3,
+    "win_rate": 28.6,
     "win_amt_total": 13564500,
     "schools": {
-      "동지여자고등학교": 5,
+      "동지여자고등학교": 6,
       "포항예술고등학교": 1
     },
-    "last_pbanc": "20251120",
+    "last_pbanc": "20260918",
     "by_year": {
       "2025": {
         "participations": 5,
@@ -309,19 +309,25 @@
         "wins": 1,
         "win_amt_total": 9483000,
         "win_rate": 100.0
+      },
+      "2026": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
       }
     }
   },
   "진평축산": {
-    "participations": 6,
+    "participations": 7,
     "wins": 2,
-    "win_rate": 33.3,
+    "win_rate": 28.6,
     "win_amt_total": 10432000,
     "schools": {
-      "동지여자고등학교": 5,
+      "동지여자고등학교": 6,
       "포항예술고등학교": 1
     },
-    "last_pbanc": "20251120",
+    "last_pbanc": "20260918",
     "by_year": {
       "2025": {
         "participations": 5,
@@ -330,6 +336,12 @@
         "win_rate": 40.0
       },
       "2024": {
+        "participations": 1,
+        "wins": 0,
+        "win_amt_total": 0,
+        "win_rate": 0.0
+      },
+      "2026": {
         "participations": 1,
         "wins": 0,
         "win_amt_total": 0,
