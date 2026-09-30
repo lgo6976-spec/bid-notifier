@@ -1,8 +1,8 @@
 {
   "다래푸드(포항)": {
-    "participations": 21,
+    "participations": 25,
     "wins": 4,
-    "win_rate": 19.0,
+    "win_rate": 16.0,
     "win_amt_total": 67130000,
     "schools": {
       "포항여자고등학교": 2,
@@ -15,15 +15,19 @@
       "장흥중학교": 1,
       "오천고등학교": 1,
       "포항동부초등학교": 1,
-      "포항영신고등학교": 2
+      "포항영신고등학교": 2,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 8,
+        "participations": 12,
         "wins": 2,
         "win_amt_total": 35930000,
-        "win_rate": 25.0
+        "win_rate": 16.7
       },
       "2025": {
         "participations": 5,
@@ -368,7 +372,7 @@
     }
   },
   "한영상사(포항)": {
-    "participations": 5,
+    "participations": 7,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
@@ -377,7 +381,9 @@
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
@@ -388,7 +394,7 @@
         "win_rate": 0.0
       },
       "2026": {
-        "participations": 4,
+        "participations": 6,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
@@ -711,71 +717,82 @@
     }
   },
   "한울유통": {
-    "participations": 6,
-    "wins": 1,
-    "win_rate": 16.7,
-    "win_amt_total": 8060000,
+    "participations": 9,
+    "wins": 2,
+    "win_rate": 22.2,
+    "win_amt_total": 53570000,
     "schools": {
       "포항항도중학교": 1,
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "포항여자고등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 6,
-        "wins": 1,
-        "win_amt_total": 8060000,
-        "win_rate": 16.7
+        "participations": 9,
+        "wins": 2,
+        "win_amt_total": 53570000,
+        "win_rate": 22.2
       }
     }
   },
   "해마루 F&B": {
-    "participations": 4,
+    "participations": 8,
     "wins": 1,
-    "win_rate": 25.0,
+    "win_rate": 12.5,
     "win_amt_total": 38992000,
     "schools": {
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
+        "participations": 8,
         "wins": 1,
         "win_amt_total": 38992000,
-        "win_rate": 25.0
+        "win_rate": 12.5
       }
     }
   },
   "단디푸드(포항)": {
-    "participations": 3,
+    "participations": 7,
     "wins": 1,
-    "win_rate": 33.3,
+    "win_rate": 14.3,
     "win_amt_total": 32630000,
     "schools": {
       "오천고등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 3,
+        "participations": 7,
         "wins": 1,
         "win_amt_total": 32630000,
-        "win_rate": 33.3
+        "win_rate": 14.3
       }
     }
   },
   "37상사": {
-    "participations": 4,
+    "participations": 8,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
@@ -783,12 +800,16 @@
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
+        "participations": 8,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
@@ -796,7 +817,7 @@
     }
   },
   "효성푸드(포항)": {
-    "participations": 4,
+    "participations": 8,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
@@ -804,12 +825,16 @@
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
+        "participations": 8,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
@@ -817,7 +842,7 @@
     }
   },
   "육공상사": {
-    "participations": 4,
+    "participations": 7,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
@@ -825,12 +850,15 @@
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
+        "participations": 7,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
@@ -838,39 +866,44 @@
     }
   },
   "연오푸드": {
-    "participations": 4,
-    "wins": 0,
-    "win_rate": 0.0,
-    "win_amt_total": 0,
+    "participations": 8,
+    "wins": 1,
+    "win_rate": 12.5,
+    "win_amt_total": 24700000,
     "schools": {
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
-        "wins": 0,
-        "win_amt_total": 0,
-        "win_rate": 0.0
+        "participations": 8,
+        "wins": 1,
+        "win_amt_total": 24700000,
+        "win_rate": 12.5
       }
     }
   },
   "주식회사한마을유통": {
-    "participations": 2,
+    "participations": 3,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
     "schools": {
       "오천고등학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "연일초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 2,
+        "participations": 3,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
@@ -878,61 +911,73 @@
     }
   },
   "(주)하나식품": {
-    "participations": 4,
-    "wins": 0,
-    "win_rate": 0.0,
-    "win_amt_total": 0,
+    "participations": 8,
+    "wins": 1,
+    "win_rate": 12.5,
+    "win_amt_total": 27312000,
     "schools": {
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
-        "wins": 0,
-        "win_amt_total": 0,
-        "win_rate": 0.0
+        "participations": 8,
+        "wins": 1,
+        "win_amt_total": 27312000,
+        "win_rate": 12.5
       }
     }
   },
   "흥해푸드": {
-    "participations": 4,
-    "wins": 1,
+    "participations": 8,
+    "wins": 2,
     "win_rate": 25.0,
-    "win_amt_total": 74070000,
+    "win_amt_total": 94240000,
     "schools": {
       "오천고등학교": 1,
       "포항동부초등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 4,
-        "wins": 1,
-        "win_amt_total": 74070000,
+        "participations": 8,
+        "wins": 2,
+        "win_amt_total": 94240000,
         "win_rate": 25.0
       }
     }
   },
   "(주)성곡푸드": {
-    "participations": 3,
+    "participations": 7,
     "wins": 0,
     "win_rate": 0.0,
     "win_amt_total": 0,
     "schools": {
       "오천고등학교": 1,
       "신흥중학교": 1,
-      "포항영신고등학교": 1
+      "포항영신고등학교": 1,
+      "유강중학교": 1,
+      "연일초등학교": 1,
+      "양학중학교": 1,
+      "포항원동초등학교": 1
     },
     "last_pbanc": "20260921",
     "by_year": {
       "2026": {
-        "participations": 3,
+        "participations": 7,
         "wins": 0,
         "win_amt_total": 0,
         "win_rate": 0.0
