@@ -2863,5 +2863,20 @@
     "win_sajeong_pct": 90.39,
     "win_bid_amt": 17159300,
     "margin": 0.39000000000000057
+  },
+  {
+    "bid_id": "5812586",
+    "school": "창포중학교",
+    "bid_nm": "2026년 10월분 급식용식재료 구매 소액수의견적제출 안내 공고",
+    "pbanc": "20260922",
+    "bgng_prc": 59302023,
+    "plnprc": 60203149,
+    "plnprc_ratio": 1.0151955355722013,
+    "std_pct": 88.0,
+    "dcsn_mth": "003",
+    "n_participants": 12,
+    "win_sajeong_pct": 88.849,
+    "win_bid_amt": 53490000,
+    "margin": 0.8490000000000038
   }
 ]
