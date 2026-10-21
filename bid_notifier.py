@@ -496,8 +496,18 @@ def matches_filter(row, item_keywords, exclude_keywords, now_str):
     if row.get("BID_END_DT", "") < now_str:
         return False  # 이미 마감된 공고는 제외
     bid_nm = row.get("BID_NM", "")
-    if any(kw in bid_nm for kw in exclude_keywords):
-        return False  # "부식"처럼 축산/육류 전용이 아닌 통합구매 공고는 제외
+    # "식재료"는 "소액수의"만으로 걸리는 품목 불특정 통합구매 공고를 거르기 위한
+    # exclude_keyword인데, "급식재료"라는 흔한 표현에 부분 문자열로 포함돼 있어서
+    # 제목에 "육류"처럼 축산 품목이 명시된 공고까지 오탐지로 제외시키는 버그가 있었다
+    # (2026-10-21 발견: 포항여자전자고등학교 "...급식재료 육류 구매..." 공고가 누락됨).
+    # 품목명이 명확하면("소액수의" 자체는 품목 불특정이므로 제외) "식재료" exclude는 무시한다.
+    specific_item_keywords = [kw for kw in item_keywords if kw != "소액수의"]
+    has_specific_item = any(kw in bid_nm for kw in specific_item_keywords)
+    for kw in exclude_keywords:
+        if kw in bid_nm:
+            if kw == "식재료" and has_specific_item:
+                continue
+            return False  # "부식"처럼 축산/육류 전용이 아닌 통합구매 공고는 제외
     return any(kw in bid_nm for kw in item_keywords)
 
 
