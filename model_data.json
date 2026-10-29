@@ -2953,5 +2953,50 @@
     "win_sajeong_pct": 91.069,
     "win_bid_amt": 7061700,
     "margin": 1.0690000000000026
+  },
+  {
+    "bid_id": "5825372",
+    "school": "포항여자고등학교",
+    "bid_nm": "2026년 포항여자고등학교 11월 학교급식(육류) 구매 소액수의",
+    "pbanc": "20261020",
+    "bgng_prc": 11990150,
+    "plnprc": 11939082,
+    "plnprc_ratio": 0.9957408372705929,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 6,
+    "win_sajeong_pct": 90.284,
+    "win_bid_amt": 10779100,
+    "margin": 0.284000000000006
+  },
+  {
+    "bid_id": "5827719",
+    "school": "포항장성고등학교",
+    "bid_nm": "2026년 11월 포항장성고등학교 급식품(육류) 소액수의 견적제출 안내공고",
+    "pbanc": "20261021",
+    "bgng_prc": 23535300,
+    "plnprc": 23458067,
+    "plnprc_ratio": 0.9967184187157164,
+    "std_pct": 88.0,
+    "dcsn_mth": "003",
+    "n_participants": 6,
+    "win_sajeong_pct": 88.045,
+    "win_bid_amt": 20653800,
+    "margin": 0.045000000000001705
+  },
+  {
+    "bid_id": "5827392",
+    "school": "유성여자고등학교",
+    "bid_nm": "2026년 11월 유성여자고등학교 축산물 소액수의",
+    "pbanc": "20261021",
+    "bgng_prc": 7487700,
+    "plnprc": 7494212,
+    "plnprc_ratio": 1.0008696929631262,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 5,
+    "win_sajeong_pct": 90.323,
+    "win_bid_amt": 6769000,
+    "margin": 0.3229999999999933
   }
 ]
