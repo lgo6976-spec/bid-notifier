@@ -2998,5 +2998,20 @@
     "win_sajeong_pct": 90.323,
     "win_bid_amt": 6769000,
     "margin": 0.3229999999999933
+  },
+  {
+    "bid_id": "5826397",
+    "school": "동지고등학교",
+    "bid_nm": "동지고등학교 우돈 일반입찰",
+    "pbanc": "20261020",
+    "bgng_prc": 8513400,
+    "plnprc": 8450704,
+    "plnprc_ratio": 0.9926356097446378,
+    "std_pct": 84.245,
+    "dcsn_mth": "007",
+    "n_participants": 6,
+    "win_sajeong_pct": 84.758,
+    "win_bid_amt": 7162700,
+    "margin": 0.512999999999991
   }
 ]
