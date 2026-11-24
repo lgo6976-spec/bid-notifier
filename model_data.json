@@ -3013,5 +3013,35 @@
     "win_sajeong_pct": 84.758,
     "win_bid_amt": 7162700,
     "margin": 0.512999999999991
+  },
+  {
+    "bid_id": "5838752",
+    "school": "포항예술고등학교",
+    "bid_nm": "포항예술고등학교 12월 식재료(육류) 소액수의",
+    "pbanc": "20261117",
+    "bgng_prc": 3625720,
+    "plnprc": 3668893,
+    "plnprc_ratio": 1.0119074280418785,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 2,
+    "win_sajeong_pct": 96.268,
+    "win_bid_amt": 3532000,
+    "margin": 6.268000000000001
+  },
+  {
+    "bid_id": "5835468",
+    "school": "대구교육해양수련원",
+    "bid_nm": "2026년 12월 대구교육해양수련원 육류 구매 소액수의 안내 공고",
+    "pbanc": "20261117",
+    "bgng_prc": 9408050,
+    "plnprc": 9418353,
+    "plnprc_ratio": 1.0010951259825362,
+    "std_pct": 90.0,
+    "dcsn_mth": "003",
+    "n_participants": 5,
+    "win_sajeong_pct": 94.126,
+    "win_bid_amt": 8865200,
+    "margin": 4.126000000000005
   }
 ]
